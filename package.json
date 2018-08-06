@@ -1,0 +1,92 @@
+{
+  "name": "react-accessible-typeahead",
+  "version": "0.0.0",
+  "description": "composable, accessible, keyboard and screen reader friendly typeahead component",
+  "keywords": [
+    "typeahead",
+    "autocomplete",
+    "autosuggest",
+    "react",
+    "a11y",
+    "composable",
+    "accessible",
+    "keyboard",
+    "screen reader"
+  ],
+  "main": "build/typeahead.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sarbbottam/react-accessible-typeahead.git"
+  },
+  "license": "MIT",
+  "author": "Sarbbottam Bandyopadhyay",
+  "scripts": {
+    "prebuild": "rimraf build",
+    "build": "babel --out-dir build src",
+    "start": "webpack-dev-server --content-base=example",
+    "lint": "xo",
+    "test": "npm run lint && cross-env NODE_ENV=test nyc mocha --require babel-register test/*.test.js",
+    "preversion": "npm run build"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react": "^16.4.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-istanbul": "^4.1.6",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
+    "classnames": "^2.2.6",
+    "cross-env": "^5.2.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint-config-xo-react": "^0.17.0",
+    "eslint-plugin-react": "^7.10.0",
+    "jsdom": "^11.11.0",
+    "lodash.debounce": "^4.0.8",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "raf": "^3.4.0",
+    "react-dom": "^16.4.1",
+    "react-router-dom": "^4.3.1",
+    "rimraf": "^2.6.2",
+    "sinon": "^6.1.4",
+    "webpack": "^4.16.4",
+    "webpack-atomizer-loader": "^0.5.0",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.4",
+    "xo": "^0.21.1"
+  },
+  "xo": {
+    "extends": "xo-react",
+    "envs": [
+      "mocha",
+      "browser"
+    ],
+    "esnext": true,
+    "space": true,
+    "rules": {
+      "linebreak-style": 0,
+      "capitalized-comments": 0
+    },
+    "ignores": [
+      "build",
+      "example/index.js"
+    ]
+  },
+  "nyc": {
+    "require": [
+      "babel-register"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "sourceMap": false,
+    "instrument": false
+  }
+}
