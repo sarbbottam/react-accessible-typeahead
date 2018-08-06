@@ -113,7 +113,10 @@ class TypeaheadContainer extends React.Component {
   onSelect(selectedindex) {
     this.setState(prevState => ({
       inputValue: prevState.options[selectedindex],
-      ariaLiveText: `${prevState.options[selectedindex]}, option ${selectedindex + 1} of ${prevState.options.length} selected`
+      ariaLiveText: `
+        ${prevState.options[selectedindex]}, option ${selectedindex + 1} of ${prevState.options.length} selected.
+        Options dropdown is closed.
+      `
     }));
   }
 

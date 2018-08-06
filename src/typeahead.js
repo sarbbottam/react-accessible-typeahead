@@ -44,7 +44,10 @@ class TypeAhead extends React.Component {
 
   onSelect() {
     this.props.onSelect(this.state.selectedindex);
-    this.hideOptions();
+    this.setState({
+      selectedindex: -1,
+      isOptionsVisible: false
+    });
   }
 
   onFocus() {
