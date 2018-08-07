@@ -19,15 +19,21 @@ import Typeahead from 'react-accessible-typeahead';
 
 <Typeahead
   ariaLiveText={this.state.ariaLiveText}
-  fetchOptions={this.fetchOptions}
-  onShow={this.onShow}
-  onHide={this.onHide}
-  onChange={this.inputChange}
-  onHighLight={this.onHighLight}
+  options={this.state.options}
+
+  onExpand={this.onExpand}
+  onCollapse={this.onCollapse}
+  onSelectedindexUpdate={this.onSelectedindexUpdate}
   onSelect={this.onSelect}
 >
-  <Input value={this.state.inputValue}/>
-  <Options options={this.state.options}/>
+  <Input
+    onChange={this.onChange}
+    {...props}
+  />
+  <Options
+    options={this.state.options}
+    {...props}
+  />
 </Typeahead>
 ```
 

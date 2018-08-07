@@ -73,6 +73,8 @@ class TypeaheadContainer extends React.Component {
     this.onSelectedindexUpdate = this.onSelectedindexUpdate.bind(this);
     this.onCollapse = this.onCollapse.bind(this);
     this.onExpand = this.onExpand.bind(this);
+
+    this.onChange = this.onChange.bind(this);
   }
 
   addScript(src) {
@@ -117,6 +119,10 @@ class TypeaheadContainer extends React.Component {
     }));
   }
 
+  onChange(e) {
+    this.fetchOptions(e.target.value || '');
+  }
+
   render() {
     return (
       <div className="Pos(a) W(100%)">
@@ -129,10 +135,8 @@ class TypeaheadContainer extends React.Component {
           onCollapse={this.onCollapse}
           onSelectedindexUpdate={this.onSelectedindexUpdate}
           onSelect={this.onSelect}
-
-          fetchOptions={this.fetchOptions}
         >
-          <Input/>
+          <Input onChange={this.onChange}/>
           <Options options={this.state.options}/>
         </Typeahead>
       </div>

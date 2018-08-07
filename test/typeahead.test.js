@@ -63,7 +63,9 @@ describe('<Typeahead />', () => {
 
   const onFocus = sinon.spy();
   const onBlur = sinon.spy();
-  const onChange = sinon.spy();
+  const onChange = sinon.spy(function () {
+    this.fetchOptions();
+  });
   const onKeyDown = sinon.spy();
   const onMouseDown = sinon.spy();
   const onMouseOver = sinon.spy();
@@ -96,6 +98,7 @@ describe('<Typeahead />', () => {
         this.onCollapse = onCollapse.bind(this);
         this.onSelectedindexUpdate = onSelectedindexUpdate.bind(this);
         this.onSelect = onSelect.bind(this);
+        this.onChange = onChange.bind(this);
       }
 
       render() {
@@ -104,17 +107,16 @@ describe('<Typeahead />', () => {
             ariaLiveText={this.state.ariaLiveText}
             options={this.state.options}
 
-            fetchOptions={this.fetchOptions}
-
             onExpand={this.onExpand}
             onCollapse={this.onCollapse}
             onSelectedindexUpdate={this.onSelectedindexUpdate}
             onSelect={this.onSelect}
           >
             <Input
+              onChange={this.onChange}
+
               onFocus={onFocus}
               onBlur={onBlur}
-              onChange={onChange}
               onKeyDown={onKeyDown}
             />
             <Options

@@ -63,7 +63,6 @@ class TypeAhead extends React.Component {
       this.props.children[0].props.onChange(e);
     }
     this.setState({inputValue: e.target.value});
-    this.props.fetchOptions(e.target.value || '');
     this.showOptions();
   }
 
@@ -175,8 +174,6 @@ TypeAhead.propTypes = {
   onSelect: PropTypes.func.isRequired,
   onExpand: PropTypes.func.isRequired,
   onCollapse: PropTypes.func.isRequired,
-
-  fetchOptions: PropTypes.func.isRequired,
 
   children: PropTypes.array.isRequired,
 
