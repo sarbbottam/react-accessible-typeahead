@@ -54,8 +54,8 @@ const fetchOptions = sinon.spy(function () {
 });
 const onSelect = sinon.spy();
 const onHighLight = sinon.spy();
-const onHide = sinon.spy();
-const onShow = sinon.spy();
+const onCollapse = sinon.spy();
+const onExpand = sinon.spy();
 
 class TypeaheadContainer extends React.Component {
   constructor(props) {
@@ -69,8 +69,8 @@ class TypeaheadContainer extends React.Component {
     this.fetchOptions = fetchOptions.bind(this);
     this.onSelect = onSelect.bind(this);
     this.onHighLight = onHighLight.bind(this);
-    this.onHide = onHide.bind(this);
-    this.onShow = onShow.bind(this);
+    this.onCollapse = onCollapse.bind(this);
+    this.onExpand = onExpand.bind(this);
   }
 
   render() {
@@ -79,8 +79,8 @@ class TypeaheadContainer extends React.Component {
         ariaLiveText={this.state.ariaLiveText}
         options={this.state.options}
         fetchOptions={this.fetchOptions}
-        onShow={this.onShow}
-        onHide={this.onHide}
+        onExpand={this.onExpand}
+        onCollapse={this.onCollapse}
         onHighLight={this.onHighLight}
         onSelect={this.onSelect}
       >
@@ -99,14 +99,14 @@ const MountedTypeaheadContainer = mount(
 const MountedInput = MountedTypeaheadContainer.find('input');
 
 describe('<Typeahead />', () => {
-  it('should call the onShow method when Typeahead/input is focused', () => {
+  it('should call the onExpand method when Typeahead/input is focused', () => {
     MountedInput.simulate('focus');
-    expect(onShow.called).to.be.true;
+    expect(onExpand.called).to.be.true;
   });
 
-  it('should call the onHide method when Typeahead/input is blured', () => {
+  it('should call the onCollapse method when Typeahead/input is blured', () => {
     MountedInput.simulate('blur');
-    expect(onHide.called).to.be.true;
+    expect(onCollapse.called).to.be.true;
   });
 
   it('should call the fetchOptions method when Typeahead/input is changed', () => {
@@ -157,23 +157,23 @@ describe('<Typeahead />', () => {
     expect(onSelect.withArgs(0).called).to.be.true;
   });
 
-  it('should call the onHide method when esc key is pressed on Typeahead/input', () => {
-    onHide.resetHistory();
-    expect(onHide.called).to.be.false;
+  it('should call the onCollapse method when esc key is pressed on Typeahead/input', () => {
+    onCollapse.resetHistory();
+    expect(onCollapse.called).to.be.false;
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
     MountedInput.simulate('keyDown', {keyCode: 27}); // esc
-    expect(onHide.called).to.be.true;
+    expect(onCollapse.called).to.be.true;
   });
 
-  it('must not call onHighLight, onHide, onSelect for key press other than up/down/enter/space on Typeahead/input', () => {
+  it('must not call onHighLight, onCollapse, onSelect for key press other than up/down/enter/space on Typeahead/input', () => {
     onHighLight.resetHistory();
-    onHide.resetHistory();
+    onCollapse.resetHistory();
     onSelect.resetHistory();
 
     MountedInput.simulate('keyDown', {keyCode: 65});
 
     expect(onHighLight.called).to.be.false;
-    expect(onHide.called).to.be.false;
+    expect(onCollapse.called).to.be.false;
     expect(onSelect.called).to.be.false;
   });
 

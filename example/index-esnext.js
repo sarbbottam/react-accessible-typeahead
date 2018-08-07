@@ -71,8 +71,8 @@ class TypeaheadContainer extends React.Component {
     this.fetchOptions = debounce(this.fetchOptions.bind(this), 300);
     this.onSelect = this.onSelect.bind(this);
     this.onHighLight = this.onHighLight.bind(this);
-    this.onHide = this.onHide.bind(this);
-    this.onShow = this.onShow.bind(this);
+    this.onCollapse = this.onCollapse.bind(this);
+    this.onExpand = this.onExpand.bind(this);
   }
 
   addScript(src) {
@@ -94,13 +94,13 @@ class TypeaheadContainer extends React.Component {
     }));
   }
 
-  onHide() {
+  onCollapse() {
     this.setState({
       ariaLiveText: `Options dropdown is closed.`
     });
   }
 
-  onShow() {
+  onExpand() {
     this.setState(prevState => {
       if (prevState.options.length > 0) {
         return {ariaLiveText: `${prevState.options.length} results being displayed.`};
@@ -125,8 +125,8 @@ class TypeaheadContainer extends React.Component {
           options={this.state.options}
           clearInputOnSelect={false}
 
-          onShow={this.onShow}
-          onHide={this.onHide}
+          onExpand={this.onExpand}
+          onCollapse={this.onCollapse}
           onHighLight={this.onHighLight}
           onSelect={this.onSelect}
 

@@ -28,7 +28,7 @@ class TypeAhead extends React.Component {
     this.setState({
       shouldOptionsBeVisible: true
     });
-    this.props.onShow();
+    this.props.onExpand();
   }
 
   hideOptions() {
@@ -36,7 +36,7 @@ class TypeAhead extends React.Component {
       selectedindex: -1,
       shouldOptionsBeVisible: false
     });
-    this.props.onHide();
+    this.props.onCollapse();
   }
 
   onHighLight(selectedindex) {
@@ -152,8 +152,8 @@ class TypeAhead extends React.Component {
 TypeAhead.propTypes = {
   onHighLight: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
-  onShow: PropTypes.func.isRequired,
-  onHide: PropTypes.func.isRequired,
+  onExpand: PropTypes.func.isRequired,
+  onCollapse: PropTypes.func.isRequired,
   fetchOptions: PropTypes.func.isRequired,
   children: PropTypes.array.isRequired,
   ariaLiveText: PropTypes.string.isRequired,
