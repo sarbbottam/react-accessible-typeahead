@@ -48,7 +48,6 @@ class TypeaheadContainer extends React.Component {
     super(props);
     this.state = {
       options: [],
-      inputValue: '',
       ariaLiveText: ''
     };
 
@@ -72,7 +71,6 @@ class TypeaheadContainer extends React.Component {
     this.fetchOptions = debounce(this.fetchOptions.bind(this), 300);
     this.onSelect = this.onSelect.bind(this);
     this.onHighLight = this.onHighLight.bind(this);
-    this.onChange = this.onChange.bind(this);
     this.onHide = this.onHide.bind(this);
     this.onShow = this.onShow.bind(this);
   }
@@ -112,7 +110,6 @@ class TypeaheadContainer extends React.Component {
 
   onSelect(selectedindex) {
     this.setState(prevState => ({
-      inputValue: prevState.options[selectedindex],
       ariaLiveText: `
         ${prevState.options[selectedindex]}, option ${selectedindex + 1} of ${prevState.options.length} selected.
         Options dropdown is closed.
@@ -120,15 +117,13 @@ class TypeaheadContainer extends React.Component {
     }));
   }
 
-  onChange(e) {
-    this.setState({inputValue: e.target.value});
-  }
-
   render() {
     return (
       <div className="Pos(a) W(100%)">
         <Typeahead
           ariaLiveText={this.state.ariaLiveText}
+          options={this.state.options}
+          clearInputOnSelect={false}
 
           onShow={this.onShow}
           onHide={this.onHide}
@@ -136,10 +131,8 @@ class TypeaheadContainer extends React.Component {
           onSelect={this.onSelect}
 
           fetchOptions={this.fetchOptions}
-
-          onChange={this.onChange}
         >
-          <Input value={this.state.inputValue}/>
+          <Input/>
           <Options options={this.state.options}/>
         </Typeahead>
       </div>

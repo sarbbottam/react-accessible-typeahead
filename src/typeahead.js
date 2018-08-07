@@ -8,7 +8,8 @@ class TypeAhead extends React.Component {
     super(props);
     this.state = {
       shouldOptionsBeVisible: false,
-      selectedindex: -1
+      selectedindex: -1,
+      inputValue: ''
     };
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
@@ -44,10 +45,11 @@ class TypeAhead extends React.Component {
 
   onSelect() {
     this.props.onSelect(this.state.selectedindex);
-    this.setState({
+    this.setState(prevState => ({
       selectedindex: -1,
-      shouldOptionsBeVisible: false
-    });
+      shouldOptionsBeVisible: false,
+      inputValue: this.props.clearInputOnSelect === true ? '' : this.props.options[prevState.selectedindex]
+    }));
   }
 
   onFocus() {
@@ -59,7 +61,8 @@ class TypeAhead extends React.Component {
   }
 
   onChange(e) {
-    this.props.onChange(e);
+    // this.props.onChange(e);
+    this.setState({inputValue: e.target.value});
     this.props.fetchOptions(e.target.value || '');
     this.showOptions();
   }
@@ -118,20 +121,22 @@ class TypeAhead extends React.Component {
   }
 
   render() {
-    numberOfOptions = this.props.children[1].props.options.length || 0;
+    numberOfOptions = this.props.options.length || 0;
 
     const Input = React.cloneElement(this.props.children[0], {
       onFocus: this.onFocus,
       onBlur: this.onBlur,
       onChange: this.onChange,
-      onKeyDown: this.onKeyDown
+      onKeyDown: this.onKeyDown,
+      value: this.state.inputValue
     });
 
     const Options = React.cloneElement(this.props.children[1], {
       className: this.state.shouldOptionsBeVisible && numberOfOptions ? 'D(b)' : 'D(n)',
       selectedindex: this.state.selectedindex,
       onMouseDown: this.onMouseDown,
-      onMouseOver: this.onMouseOver
+      onMouseOver: this.onMouseOver,
+      options: this.props.options
     });
 
     return (
@@ -149,10 +154,14 @@ TypeAhead.propTypes = {
   onSelect: PropTypes.func.isRequired,
   onShow: PropTypes.func.isRequired,
   onHide: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
   fetchOptions: PropTypes.func.isRequired,
   children: PropTypes.array.isRequired,
-  ariaLiveText: PropTypes.string.isRequired
+  ariaLiveText: PropTypes.string.isRequired,
+  options: PropTypes.array.isRequired,
+  clearInputOnSelect: PropTypes.bool
 };
 
+TypeAhead.defaultProps = {
+  clearInputOnSelect: false
+};
 export default TypeAhead;

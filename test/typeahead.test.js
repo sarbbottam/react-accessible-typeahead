@@ -54,7 +54,6 @@ const fetchOptions = sinon.spy(function () {
 });
 const onSelect = sinon.spy();
 const onHighLight = sinon.spy();
-const inputChange = sinon.spy();
 const onHide = sinon.spy();
 const onShow = sinon.spy();
 
@@ -70,7 +69,6 @@ class TypeaheadContainer extends React.Component {
     this.fetchOptions = fetchOptions.bind(this);
     this.onSelect = onSelect.bind(this);
     this.onHighLight = onHighLight.bind(this);
-    this.inputChange = inputChange.bind(this);
     this.onHide = onHide.bind(this);
     this.onShow = onShow.bind(this);
   }
@@ -79,10 +77,10 @@ class TypeaheadContainer extends React.Component {
     return (
       <Typeahead
         ariaLiveText={this.state.ariaLiveText}
+        options={this.state.options}
         fetchOptions={this.fetchOptions}
         onShow={this.onShow}
         onHide={this.onHide}
-        onChange={this.inputChange}
         onHighLight={this.onHighLight}
         onSelect={this.onSelect}
       >
@@ -114,7 +112,6 @@ describe('<Typeahead />', () => {
   it('should call the fetchOptions method when Typeahead/input is changed', () => {
     MountedInput.simulate('change');
     expect(fetchOptions.called).to.be.true;
-    expect(inputChange.called).to.be.true;
   });
 
   it('should call the onHighLight method when down key is pressed on Typeahead/input', () => {
