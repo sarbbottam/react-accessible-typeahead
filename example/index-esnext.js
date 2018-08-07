@@ -128,7 +128,6 @@ class TypeaheadContainer extends React.Component {
       <div className="Pos(a) W(100%)">
         <Typeahead
           ariaLiveText={this.state.ariaLiveText}
-          options={this.state.options}
           clearInputOnSelect={false}
 
           onExpand={this.onExpand}

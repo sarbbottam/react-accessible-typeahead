@@ -19,7 +19,6 @@ import Typeahead from 'react-accessible-typeahead';
 
 <Typeahead
   ariaLiveText={this.state.ariaLiveText}
-  options={this.state.options}
 
   onExpand={this.onExpand}
   onCollapse={this.onCollapse}

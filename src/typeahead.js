@@ -136,12 +136,12 @@ class TypeAhead extends React.Component {
     this.setState(prevState => ({
       selectedindex: -1,
       shouldOptionsBeVisible: false,
-      inputValue: this.props.clearInputOnSelect === true ? /* istanbul ignore next */ '' : this.props.options[prevState.selectedindex]
+      inputValue: this.props.clearInputOnSelect === true ? /* istanbul ignore next */ '' : this.props.children[1].props.options[prevState.selectedindex]
     }));
   }
 
   render() {
-    numberOfOptions = this.props.options.length || 0;
+    numberOfOptions = this.props.children[1].props.options.length || 0;
 
     const Input = React.cloneElement(this.props.children[0], {
       onFocus: this.onFocus,
@@ -155,8 +155,7 @@ class TypeAhead extends React.Component {
       className: this.state.shouldOptionsBeVisible && numberOfOptions ? 'D(b)' : 'D(n)',
       selectedindex: this.state.selectedindex,
       onMouseDown: this.onMouseDown,
-      onMouseOver: this.onMouseOver,
-      options: this.props.options
+      onMouseOver: this.onMouseOver
     });
 
     return (
@@ -178,7 +177,6 @@ TypeAhead.propTypes = {
   children: PropTypes.array.isRequired,
 
   ariaLiveText: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
   clearInputOnSelect: PropTypes.bool
 };
 

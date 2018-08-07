@@ -105,7 +105,6 @@ describe('<Typeahead />', () => {
         return (
           <Typeahead
             ariaLiveText={this.state.ariaLiveText}
-            options={this.state.options}
 
             onExpand={this.onExpand}
             onCollapse={this.onCollapse}
