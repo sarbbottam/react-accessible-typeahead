@@ -18,7 +18,7 @@ class TypeAhead extends React.Component {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onSelect = this.onSelect.bind(this);
-    this.onHighLight = this.onHighLight.bind(this);
+    this.onSelectedindexUpdate = this.props.onSelectedindexUpdate;
 
     this.showOptions = this.showOptions.bind(this);
     this.hideOptions = this.hideOptions.bind(this);
@@ -37,10 +37,6 @@ class TypeAhead extends React.Component {
       shouldOptionsBeVisible: false
     });
     this.props.onCollapse();
-  }
-
-  onHighLight(selectedindex) {
-    this.props.onHighLight(selectedindex);
   }
 
   onSelect() {
@@ -104,7 +100,7 @@ class TypeAhead extends React.Component {
       shouldOptionsBeVisible: true,
       selectedindex
     });
-    this.onHighLight(selectedindex);
+    this.onSelectedindexUpdate(selectedindex);
   }
 
   onMouseDown(e) {
@@ -117,7 +113,7 @@ class TypeAhead extends React.Component {
     this.setState({
       selectedindex
     });
-    this.onHighLight(selectedindex);
+    this.onSelectedindexUpdate(selectedindex);
   }
 
   render() {
@@ -150,7 +146,7 @@ class TypeAhead extends React.Component {
 }
 
 TypeAhead.propTypes = {
-  onHighLight: PropTypes.func.isRequired,
+  onSelectedindexUpdate: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   onExpand: PropTypes.func.isRequired,
   onCollapse: PropTypes.func.isRequired,

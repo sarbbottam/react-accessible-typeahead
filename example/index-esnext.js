@@ -70,7 +70,7 @@ class TypeaheadContainer extends React.Component {
 
     this.fetchOptions = debounce(this.fetchOptions.bind(this), 300);
     this.onSelect = this.onSelect.bind(this);
-    this.onHighLight = this.onHighLight.bind(this);
+    this.onSelectedindexUpdate = this.onSelectedindexUpdate.bind(this);
     this.onCollapse = this.onCollapse.bind(this);
     this.onExpand = this.onExpand.bind(this);
   }
@@ -88,7 +88,7 @@ class TypeaheadContainer extends React.Component {
     this.addScript(`https://en.wikipedia.org/w/api.php?action=query&format=json&generator=prefixsearch&gpssearch=${query}&gpslimit=10&callback=parseResponse`);
   }
 
-  onHighLight(selectedindex) {
+  onSelectedindexUpdate(selectedindex) {
     this.setState(prevState => ({
       ariaLiveText: `${prevState.options[selectedindex]}, option ${selectedindex + 1} of ${prevState.options.length}`
     }));
@@ -127,7 +127,7 @@ class TypeaheadContainer extends React.Component {
 
           onExpand={this.onExpand}
           onCollapse={this.onCollapse}
-          onHighLight={this.onHighLight}
+          onSelectedindexUpdate={this.onSelectedindexUpdate}
           onSelect={this.onSelect}
 
           fetchOptions={this.fetchOptions}

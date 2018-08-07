@@ -53,7 +53,7 @@ const fetchOptions = sinon.spy(function () {
   });
 });
 const onSelect = sinon.spy();
-const onHighLight = sinon.spy();
+const onSelectedindexUpdate = sinon.spy();
 const onCollapse = sinon.spy();
 const onExpand = sinon.spy();
 
@@ -68,7 +68,7 @@ class TypeaheadContainer extends React.Component {
 
     this.fetchOptions = fetchOptions.bind(this);
     this.onSelect = onSelect.bind(this);
-    this.onHighLight = onHighLight.bind(this);
+    this.onSelectedindexUpdate = onSelectedindexUpdate.bind(this);
     this.onCollapse = onCollapse.bind(this);
     this.onExpand = onExpand.bind(this);
   }
@@ -81,7 +81,7 @@ class TypeaheadContainer extends React.Component {
         fetchOptions={this.fetchOptions}
         onExpand={this.onExpand}
         onCollapse={this.onCollapse}
-        onHighLight={this.onHighLight}
+        onSelectedindexUpdate={this.onSelectedindexUpdate}
         onSelect={this.onSelect}
       >
         <Input value={this.state.inputValue}/>
@@ -114,40 +114,40 @@ describe('<Typeahead />', () => {
     expect(fetchOptions.called).to.be.true;
   });
 
-  it('should call the onHighLight method when down key is pressed on Typeahead/input', () => {
-    onHighLight.resetHistory();
+  it('should call the onSelectedindexUpdate method when down key is pressed on Typeahead/input', () => {
+    onSelectedindexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onHighLight.withArgs(0).called).to.be.true;
+    expect(onSelectedindexUpdate.withArgs(0).called).to.be.true;
 
-    onHighLight.resetHistory();
+    onSelectedindexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onHighLight.withArgs(1).called).to.be.true;
+    expect(onSelectedindexUpdate.withArgs(1).called).to.be.true;
 
-    onHighLight.resetHistory();
+    onSelectedindexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onHighLight.withArgs(2).called).to.be.true;
+    expect(onSelectedindexUpdate.withArgs(2).called).to.be.true;
 
-    onHighLight.resetHistory();
+    onSelectedindexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onHighLight.withArgs(0).called).to.be.true;
+    expect(onSelectedindexUpdate.withArgs(0).called).to.be.true;
   });
 
-  it('should call the onHighLight method when up key is pressed on Typeahead/input', () => {
-    onHighLight.resetHistory();
+  it('should call the onSelectedindexUpdate method when up key is pressed on Typeahead/input', () => {
+    onSelectedindexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onHighLight.withArgs(2).called).to.be.true;
+    expect(onSelectedindexUpdate.withArgs(2).called).to.be.true;
 
-    onHighLight.resetHistory();
+    onSelectedindexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onHighLight.withArgs(1).called).to.be.true;
+    expect(onSelectedindexUpdate.withArgs(1).called).to.be.true;
 
-    onHighLight.resetHistory();
+    onSelectedindexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onHighLight.withArgs(0).called).to.be.true;
+    expect(onSelectedindexUpdate.withArgs(0).called).to.be.true;
 
-    onHighLight.resetHistory();
+    onSelectedindexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onHighLight.withArgs(2).called).to.be.true;
+    expect(onSelectedindexUpdate.withArgs(2).called).to.be.true;
   });
 
   it('should call the onSelect method when enter key is pressed on Typeahead/input', () => {
@@ -165,14 +165,14 @@ describe('<Typeahead />', () => {
     expect(onCollapse.called).to.be.true;
   });
 
-  it('must not call onHighLight, onCollapse, onSelect for key press other than up/down/enter/space on Typeahead/input', () => {
-    onHighLight.resetHistory();
+  it('must not call onSelectedindexUpdate, onCollapse, onSelect for key press other than up/down/enter/space on Typeahead/input', () => {
+    onSelectedindexUpdate.resetHistory();
     onCollapse.resetHistory();
     onSelect.resetHistory();
 
     MountedInput.simulate('keyDown', {keyCode: 65});
 
-    expect(onHighLight.called).to.be.false;
+    expect(onSelectedindexUpdate.called).to.be.false;
     expect(onCollapse.called).to.be.false;
     expect(onSelect.called).to.be.false;
   });
