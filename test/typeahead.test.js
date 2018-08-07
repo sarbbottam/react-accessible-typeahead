@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-// import raf from 'raf';
 import sinon from 'sinon';
 import Enzyme, {mount} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -52,25 +51,26 @@ const fetchOptions = sinon.spy(function () {
     options: ['foo', 'bar', 'baz']
   });
 });
-const onSelect = sinon.spy();
-const onSelectedindexUpdate = sinon.spy();
-const onCollapse = sinon.spy();
+
 const onExpand = sinon.spy();
+const onCollapse = sinon.spy();
+const onSelectedindexUpdate = sinon.spy();
+const onSelect = sinon.spy();
 
 class TypeaheadContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       options: [],
-      inputValue: '',
       ariaLiveText: ''
     };
 
     this.fetchOptions = fetchOptions.bind(this);
-    this.onSelect = onSelect.bind(this);
-    this.onSelectedindexUpdate = onSelectedindexUpdate.bind(this);
-    this.onCollapse = onCollapse.bind(this);
+
     this.onExpand = onExpand.bind(this);
+    this.onCollapse = onCollapse.bind(this);
+    this.onSelectedindexUpdate = onSelectedindexUpdate.bind(this);
+    this.onSelect = onSelect.bind(this);
   }
 
   render() {
@@ -78,13 +78,15 @@ class TypeaheadContainer extends React.Component {
       <Typeahead
         ariaLiveText={this.state.ariaLiveText}
         options={this.state.options}
+
         fetchOptions={this.fetchOptions}
+
         onExpand={this.onExpand}
         onCollapse={this.onCollapse}
         onSelectedindexUpdate={this.onSelectedindexUpdate}
         onSelect={this.onSelect}
       >
-        <Input value={this.state.inputValue}/>
+        <Input/>
         <Options options={this.state.options}/>
       </Typeahead>
     );
@@ -100,16 +102,27 @@ const MountedInput = MountedTypeaheadContainer.find('input');
 
 describe('<Typeahead />', () => {
   it('should call the onExpand method when Typeahead/input is focused', () => {
+    onExpand.resetHistory();
     MountedInput.simulate('focus');
     expect(onExpand.called).to.be.true;
   });
 
   it('should call the onCollapse method when Typeahead/input is blured', () => {
+    onCollapse.resetHistory();
     MountedInput.simulate('blur');
     expect(onCollapse.called).to.be.true;
   });
 
+  it('should call the onCollapse method when esc key is pressed on Typeahead/input', () => {
+    onCollapse.resetHistory();
+    expect(onCollapse.called).to.be.false;
+    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
+    MountedInput.simulate('keyDown', {keyCode: 27}); // esc
+    expect(onCollapse.called).to.be.true;
+  });
+
   it('should call the fetchOptions method when Typeahead/input is changed', () => {
+    fetchOptions.resetHistory();
     MountedInput.simulate('change');
     expect(fetchOptions.called).to.be.true;
   });
@@ -150,21 +163,6 @@ describe('<Typeahead />', () => {
     expect(onSelectedindexUpdate.withArgs(2).called).to.be.true;
   });
 
-  it('should call the onSelect method when enter key is pressed on Typeahead/input', () => {
-    onSelect.resetHistory();
-    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    MountedInput.simulate('keyDown', {keyCode: 13}); // enter
-    expect(onSelect.withArgs(0).called).to.be.true;
-  });
-
-  it('should call the onCollapse method when esc key is pressed on Typeahead/input', () => {
-    onCollapse.resetHistory();
-    expect(onCollapse.called).to.be.false;
-    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    MountedInput.simulate('keyDown', {keyCode: 27}); // esc
-    expect(onCollapse.called).to.be.true;
-  });
-
   it('must not call onSelectedindexUpdate, onCollapse, onSelect for key press other than up/down/enter/space on Typeahead/input', () => {
     onSelectedindexUpdate.resetHistory();
     onCollapse.resetHistory();
@@ -175,6 +173,13 @@ describe('<Typeahead />', () => {
     expect(onSelectedindexUpdate.called).to.be.false;
     expect(onCollapse.called).to.be.false;
     expect(onSelect.called).to.be.false;
+  });
+
+  it('should call the onSelect method when enter key is pressed on Typeahead/input', () => {
+    onSelect.resetHistory();
+    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
+    MountedInput.simulate('keyDown', {keyCode: 13}); // enter
+    expect(onSelect.withArgs(0).called).to.be.true;
   });
 
   it('should call the onSelect method when mouse down is performed on any Typeahead/option', () => {
