@@ -72,7 +72,7 @@ class TypeaheadContainer extends React.Component {
     this.fetchOptions = debounce(this.fetchOptions.bind(this), 300);
     this.onSelect = this.onSelect.bind(this);
     this.onHighLight = this.onHighLight.bind(this);
-    this.inputChange = this.inputChange.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.onHide = this.onHide.bind(this);
     this.onShow = this.onShow.bind(this);
   }
@@ -120,7 +120,7 @@ class TypeaheadContainer extends React.Component {
     }));
   }
 
-  inputChange(e) {
+  onChange(e) {
     this.setState({inputValue: e.target.value});
   }
 
@@ -137,7 +137,7 @@ class TypeaheadContainer extends React.Component {
 
           fetchOptions={this.fetchOptions}
 
-          onChange={this.inputChange}
+          onChange={this.onChange}
         >
           <Input value={this.state.inputValue}/>
           <Options options={this.state.options}/>
