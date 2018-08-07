@@ -11,17 +11,19 @@ class TypeAhead extends React.Component {
       selectedindex: -1,
       inputValue: ''
     };
+
+    this.showOptions = this.showOptions.bind(this);
+    this.hideOptions = this.hideOptions.bind(this);
+
     this.onFocus = this.onFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
+
     this.onSelect = this.onSelect.bind(this);
     this.onSelectedindexUpdate = this.props.onSelectedindexUpdate;
-
-    this.showOptions = this.showOptions.bind(this);
-    this.hideOptions = this.hideOptions.bind(this);
   }
 
   showOptions() {
@@ -39,31 +41,25 @@ class TypeAhead extends React.Component {
     this.props.onCollapse();
   }
 
-  onSelect() {
-    this.props.onSelect(this.state.selectedindex);
-    this.setState(prevState => ({
-      selectedindex: -1,
-      shouldOptionsBeVisible: false,
-      inputValue: this.props.clearInputOnSelect === true ? '' : this.props.options[prevState.selectedindex]
-    }));
-  }
-
-  onFocus() {
+  onFocus(e) {
+    this.props.onFocus(e);
     this.showOptions();
   }
 
-  onBlur() {
+  onBlur(e) {
+    this.props.onBlur(e);
     this.hideOptions();
   }
 
   onChange(e) {
-    // this.props.onChange(e);
+    this.props.onChange(e);
     this.setState({inputValue: e.target.value});
     this.props.fetchOptions(e.target.value || '');
     this.showOptions();
   }
 
   onKeyDown(e) {
+    this.props.onKeyDown(e);
     if (e.keyCode !== 13 && e.keyCode !== 27 && e.keyCode !== 38 && e.keyCode !== 40) {
       return;
     }
@@ -104,16 +100,27 @@ class TypeAhead extends React.Component {
   }
 
   onMouseDown(e) {
+    this.props.onMouseDown(e);
     e.preventDefault();
     this.onSelect();
   }
 
   onMouseOver(e) {
+    this.props.onMouseOver(e);
     const selectedindex = Number(e.target.getAttribute('data-index'));
     this.setState({
       selectedindex
     });
     this.onSelectedindexUpdate(selectedindex);
+  }
+
+  onSelect() {
+    this.props.onSelect(this.state.selectedindex);
+    this.setState(prevState => ({
+      selectedindex: -1,
+      shouldOptionsBeVisible: false,
+      inputValue: this.props.clearInputOnSelect === true ? '' : this.props.options[prevState.selectedindex]
+    }));
   }
 
   render() {
@@ -146,18 +153,35 @@ class TypeAhead extends React.Component {
 }
 
 TypeAhead.propTypes = {
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onMouseDown: PropTypes.func,
+  onMouseOver: PropTypes.func,
+
   onSelectedindexUpdate: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   onExpand: PropTypes.func.isRequired,
   onCollapse: PropTypes.func.isRequired,
+
   fetchOptions: PropTypes.func.isRequired,
+
   children: PropTypes.array.isRequired,
+
   ariaLiveText: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   clearInputOnSelect: PropTypes.bool
 };
 
 TypeAhead.defaultProps = {
+  onFocus: () => {},
+  onBlur: () => {},
+  onChange: () => {},
+  onKeyDown: () => {},
+  onMouseDown: () => {},
+  onMouseOver: () => {},
+
   clearInputOnSelect: false
 };
 export default TypeAhead;
