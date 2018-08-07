@@ -7,7 +7,7 @@ class TypeAhead extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOptionsVisible: false,
+      shouldOptionsBeVisible: false,
       selectedindex: -1
     };
     this.onFocus = this.onFocus.bind(this);
@@ -25,7 +25,7 @@ class TypeAhead extends React.Component {
 
   showOptions() {
     this.setState({
-      isOptionsVisible: true
+      shouldOptionsBeVisible: true
     });
     this.props.onShow();
   }
@@ -33,7 +33,7 @@ class TypeAhead extends React.Component {
   hideOptions() {
     this.setState({
       selectedindex: -1,
-      isOptionsVisible: false
+      shouldOptionsBeVisible: false
     });
     this.props.onHide();
   }
@@ -46,7 +46,7 @@ class TypeAhead extends React.Component {
     this.props.onSelect(this.state.selectedindex);
     this.setState({
       selectedindex: -1,
-      isOptionsVisible: false
+      shouldOptionsBeVisible: false
     });
   }
 
@@ -98,6 +98,7 @@ class TypeAhead extends React.Component {
     }
 
     this.setState({
+      shouldOptionsBeVisible: true,
       selectedindex
     });
     this.onHighLight(selectedindex);
@@ -127,7 +128,7 @@ class TypeAhead extends React.Component {
     });
 
     const Options = React.cloneElement(this.props.children[1], {
-      className: this.state.isOptionsVisible && numberOfOptions ? 'D(b)' : 'D(n)',
+      className: this.state.shouldOptionsBeVisible && numberOfOptions ? 'D(b)' : 'D(n)',
       selectedindex: this.state.selectedindex,
       onMouseDown: this.onMouseDown,
       onMouseOver: this.onMouseOver
