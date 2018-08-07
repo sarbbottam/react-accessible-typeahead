@@ -61,6 +61,13 @@ describe('<Typeahead />', () => {
   const onSelectedindexUpdate = sinon.spy();
   const onSelect = sinon.spy();
 
+  const onFocus = sinon.spy();
+  const onBlur = sinon.spy();
+  const onChange = sinon.spy();
+  const onKeyDown = sinon.spy();
+  const onMouseDown = sinon.spy();
+  const onMouseOver = sinon.spy();
+
   beforeEach(() => {
     fetchOptions.resetHistory();
 
@@ -68,6 +75,13 @@ describe('<Typeahead />', () => {
     onCollapse.resetHistory();
     onSelectedindexUpdate.resetHistory();
     onSelect.resetHistory();
+
+    onFocus.resetHistory();
+    onBlur.resetHistory();
+    onChange.resetHistory();
+    onKeyDown.resetHistory();
+    onMouseDown.resetHistory();
+    onMouseOver.resetHistory();
     class TypeaheadContainer extends React.Component {
       constructor(props) {
         super(props);
@@ -97,8 +111,18 @@ describe('<Typeahead />', () => {
             onSelectedindexUpdate={this.onSelectedindexUpdate}
             onSelect={this.onSelect}
           >
-            <Input/>
-            <Options options={this.state.options}/>
+            <Input
+              onFocus={onFocus}
+              onBlur={onBlur}
+              onChange={onChange}
+              onKeyDown={onKeyDown}
+            />
+            <Options
+              options={this.state.options}
+
+              onMouseDown={onMouseDown}
+              onMouseOver={onMouseOver}
+            />
           </Typeahead>
         );
       }
@@ -116,6 +140,13 @@ describe('<Typeahead />', () => {
     expect(fetchOptions.called).to.be.false;
     expect(onSelectedindexUpdate.called).to.be.false;
     expect(onSelect.called).to.be.false;
+
+    expect(onFocus.called).to.be.false;
+    expect(onBlur.called).to.be.false;
+    expect(onChange.called).to.be.false;
+    expect(onKeyDown.called).to.be.false;
+    expect(onMouseDown.called).to.be.false;
+    expect(onMouseOver.called).to.be.false;
   });
 
   it('should call the onExpand method when Typeahead/input is focused', () => {
@@ -203,5 +234,30 @@ describe('<Typeahead />', () => {
     MountedTypeaheadContainer.find('li').first().simulate('mouseOver');
     MountedTypeaheadContainer.find('li').first().simulate('mouseDown');
     expect(onSelect.withArgs(0).called).to.be.true;
+  });
+
+  it('should call the passed onFocus, onBlur, onChange, and onKeyDown when such event occurs on Typeahead/input', () => {
+    MountedInput.simulate('focus');
+    expect(onFocus.called).to.be.true;
+
+    MountedInput.simulate('change');
+    expect(onChange.called).to.be.true;
+
+    MountedInput.simulate('keyDown', {keyCode: 40});
+    expect(onKeyDown.called).to.be.true;
+
+    MountedInput.simulate('blur');
+    expect(onBlur.called).to.be.true;
+  });
+
+  it('should call the passed onMouseDown and onMouseOver when such event occurs on Typeahead/option', () => {
+    MountedInput.simulate('focus');
+    MountedInput.simulate('change');
+
+    MountedTypeaheadContainer.find('li').first().simulate('mouseOver');
+    expect(onMouseOver.called).to.be.true;
+
+    MountedTypeaheadContainer.find('li').first().simulate('mouseDown');
+    expect(onMouseDown.called).to.be.true;
   });
 });
