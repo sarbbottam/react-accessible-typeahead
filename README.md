@@ -56,6 +56,12 @@ import Typeahead from 'react-accessible-typeahead';
 </Typeahead>
 ```
 
+Refer [example directory](example) for a concrete example.
+
+Contributing
+------------------------------------------------------------------------------
+Please refer [CONTRIBUTING.md](contributing.md) for instructions to [get started](CONTRIBUTING.md#Get_Started)
+
 License
 ------------------------------------------------------------------------------
 
