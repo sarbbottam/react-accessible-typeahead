@@ -4,6 +4,8 @@ react-accessible-typeahead
 Composable, accessible, keyboard and screen reader friendly
 
 
+<img src="logo/logo.png" alt="" width="240px">
+
 Installation
 ------------------------------------------------------------------------------
 
@@ -13,6 +15,10 @@ npm i react-accessible-typeahead --save
 
 Usage
 ------------------------------------------------------------------------------
+
+```css
+@import /path/to/node_modules/react-accessible-typeahead/build/main.css
+```
 
 ```js
 import Typeahead from 'react-accessible-typeahead';
