@@ -1,4 +1,12 @@
+/coverage
 /example
+/src
 /test
-webpack.config.js
 .babelrc
+.editorconfig
+.gitignore
+.npmignore
+acss.config.js
+CODE-OF-CONDUCT
+CONTRIBUTING.md
+webpack.config.js
