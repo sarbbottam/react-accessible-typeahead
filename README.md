@@ -1,10 +1,10 @@
+<img src="logo/logo.png" alt="" width="240px">
+
 react-accessible-typeahead
 ==============================================================================
 
-Composable, accessible, keyboard and screen reader friendly
+Composable, accessible, keyboard and screen reader friendly, see it in action at https://sarbbottam.github.io/react-accessible-typeahead/
 
-
-<img src="logo/logo.png" alt="" width="240px">
 
 Installation
 ------------------------------------------------------------------------------
