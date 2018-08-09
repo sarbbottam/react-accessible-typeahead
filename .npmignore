@@ -1,5 +1,6 @@
 /coverage
 /example
+/logo
 /src
 /test
 .babelrc
