@@ -15,51 +15,60 @@ npm i react-accessible-typeahead --save
 
 Usage
 ------------------------------------------------------------------------------
+Import the `react-accessible-typeahead/build/main.css` to App so:
 
 ```css
 @import /path/to/node_modules/react-accessible-typeahead/build/main.css;
 ```
 
+Use the `react-accessible-typeahead` component in the App like so:
 ```js
 import Typeahead from 'react-accessible-typeahead';
 
 <Typeahead
-  // required
+  /* required */
+
   // text that will be used to update the aria live region
-  // probably use the onExpand, onCollapse, onSelectedindexUpdate, onSelect hook to update it with appropriate text
+  // probably use onExpand, onCollapse, onSelectedIndexUpdate, onSelect hook to update it with appropriate text
   // so that a screen reader user will be aware of the changes
   ariaLiveText={this.state.ariaLiveText}
   // number of available options
   numberOfOptions={this.state.numberOfOptions}
-
-  // required
-  // use the onSelectedindexUpdate, onSelect hook to perform any action corresponding to the events
-  onSelectedindexUpdate={this.onSelectedindexUpdate}
+  // use onSelectedIndexUpdate hook to perform any action corresponding to the event
+  onSelectedIndexUpdate={this.onSelectedIndexUpdate}
+  // use onSelect hook to perform any action corresponding to the event
   onSelect={this.onSelect}
   // getSelectedIndex accepts the HTML node that is currently mouseover-ed and returns the corresponding index
   getSelectedIndex={this.getSelectedIndex}
   // getSelectedIndex accepts the selectedindex and returns the corresponding value for it
   getSelectedValue={this.getSelectedValue}
 
-  // optional
-  // use the onExpand, onCollapse hook to perform any action corresponding to the events
+  /* optional */
+
+  // use onExpand hook to perform any action corresponding to the event
   onExpand={this.onExpand}
+  // use onCollapse hook to perform any action corresponding to the event
   onCollapse={this.onCollapse}
 >
   <Input
-    // required
+    /* required */
+
     // use onChange to fetch data, update this.state.options and numberOfOptions
     // this method will be called from TypeAhead's onChange method
-    // which will be passed to Input as props
+    // TypeAhead's onChange method will be passed to this Input as props
     onChange={this.onChange}
 
-    // optional
+    /* optional*/
+
     // pass any other props if needed
     {...props}
   />
   <Options
-    // optional
-    // pass any other props if needed
+    /* optional */
+
+    // pass any props if needed
+    // probably pass this.state.options which could be used by Options component
+    options={this.state.options}
     {...props}
   />
 </Typeahead>
@@ -67,7 +76,7 @@ import Typeahead from 'react-accessible-typeahead';
 
 Refer [example directory](example) for a concrete example.
 
-The example components are also part of the distribution please access them like so:
+The example components are also part of the distribution, please access them like so:
 
 ```js
 import Input from '/path/to/node_modules/react-accessible-typeahead/build/example/component/input.js';
@@ -75,7 +84,7 @@ import Options from '/path/to/node_modules/react-accessible-typeahead/build/exam
 import TypeaheadWikipedia from '/path/to/node_modules/react-accessible-typeahead/build/example/component/typeahead-wikipedia.js';
 ```
 
-Please ensure to `import` the `/path/to/node_modules/react-accessible-typeahead/build/example/main.css`
+Please ensure to `import` the `/path/to/node_modules/react-accessible-typeahead/build/example/main.css`, like so:
 
 ```css
 @import /path/to/node_modules/react-accessible-typeahead/build/example/main.css;
@@ -83,7 +92,7 @@ Please ensure to `import` the `/path/to/node_modules/react-accessible-typeahead/
 
 Contributing
 ------------------------------------------------------------------------------
-Please refer [CONTRIBUTING.md](contributing.md) for instructions to [get started](CONTRIBUTING.md#Get_Started)
+Please refer [CONTRIBUTING.md](contributing.md) for instructions to [get started](CONTRIBUTING.md#Get_Started).
 
 License
 ------------------------------------------------------------------------------
