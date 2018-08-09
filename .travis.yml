@@ -1,10 +1,13 @@
 sudo: false
-
 language: node_js
 node_js:
- - '10'
-
-script: npm run test
-
+- '10'
+script:
+  - npm run test
+  - npm run-script deploy
 after_script:
 - npm run codecov
+env:
+  global:
+    - GH_REF: github.com/sarbbottam/react-accessible-typeahead
+    - secure: IMoJ3/8nRDe1jKx0TfVPvD1Ac4h2Zd5rGsABQJhBZCuxEfwOeyX4XAccefIX1nmvAZetCuefxWKMSjiS/MWStX/6LpWJS+M2ouGaPOh0+z6ILAO83O9tO3wRUccNhKb9IWg1igmVf+4UmeD4lGdlcy9I7wbsWQP4JvtuDGfcL02AdXIXmiGavgmVUrsuq/sQhmho7JzP+ARclYygNHY081luodo1I9Ljhg7zgmcJekig+kV46GqyUt5ICYlcDPkxAyCa3Cg7vS/FpRxBmSxPGZ0MDqfNmwdpXk5d+JDIJA3UccZ/tUhs7XsisE0pVErxyTygZ7ixTV0wq86YDrJl9feVQTJ4hcosMeAMruddbKyn7NKcGMt2oGJDd2N/sfn4C3fNoE2wivm7/0Ua1ItLJ7gcInNk+LMb5WnpI1Nx3ZCkSRzUVB7EMCfHLTOH6eeARzqcnkynSBxs7PTldlx+fOQEzn2u3ChYZ6XDY0PAemmIpnI+b/YDJfm1ky+fJwe2/y2d81X+6T65O0m+AeLV1bQT6J40e42YUHgYOMpjtw/SIZspnlCbhH7BaC8ePYS83k3agmtbYfitC/AemZgvZPQn8aBei73oy/CGa/y6jr/NmKrZSMrT1F/1Jw1pxnvSSvpyTfzYB+wChu3FrPN1mcTyxi1yctQcgAIycypwLNU=
