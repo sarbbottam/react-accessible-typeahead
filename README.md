@@ -49,6 +49,8 @@ import Typeahead from 'react-accessible-typeahead';
   <Input
     // required
     // use onChange to fetch data and update this.state.options
+    // this method will be called from TypeAhead's onChange method
+    // which will be passed to Input as props
     onChange={this.onChange}
 
     // optional
@@ -56,10 +58,6 @@ import Typeahead from 'react-accessible-typeahead';
     {...props}
   />
   <Options
-    // required
-    // options will be used by the TypeAhead to identify the text for the currently selected option
-    options={this.state.options}
-
     // optional
     // pass any other props if needed
     {...props}

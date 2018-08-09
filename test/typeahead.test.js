@@ -132,7 +132,6 @@ describe('<Typeahead />', () => {
             />
             <Options
               options={this.state.options}
-
               onMouseDown={onMouseDown}
               onMouseOver={onMouseOver}
             />
