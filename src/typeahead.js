@@ -148,7 +148,8 @@ class TypeAhead extends React.Component {
       onBlur: this.onBlur,
       onChange: this.onChange,
       onKeyDown: this.onKeyDown,
-      value: this.state.inputValue
+      value: this.state.inputValue,
+      'aria-expanded': this.state.shouldOptionsBeVisible && Boolean(numberOfOptions)
     });
 
     const Options = React.cloneElement(this.props.children[1], {
