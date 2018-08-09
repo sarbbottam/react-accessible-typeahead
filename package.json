@@ -80,6 +80,7 @@
     },
     "ignores": [
       "build",
+      "example/vendor",
       "example/index.js"
     ]
   },

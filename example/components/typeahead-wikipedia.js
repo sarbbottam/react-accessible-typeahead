@@ -81,7 +81,7 @@ class TypeaheadWikipedia extends React.Component {
 
   render() {
     return (
-      <div className="Pos(a) W(100%)">
+      <div className="Pos(r) W(100%)">
         <Typeahead
           numberOfOptions={this.state.numberOfOptions}
           ariaLiveText={this.state.ariaLiveText}
