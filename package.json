@@ -28,9 +28,11 @@
     "start": "webpack-dev-server --content-base=example",
     "lint": "xo",
     "test": "npm run lint && cross-env NODE_ENV=test nyc mocha --require babel-register test/*.test.js",
+    "codecov": "codecov",
     "preversion": "npm run build"
   },
   "dependencies": {
+    "codecov": "^3.0.4",
     "prop-types": "^15.6.2",
     "react": "^16.4.1"
   },
