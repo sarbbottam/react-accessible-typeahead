@@ -1,5 +1,5 @@
 module.exports = {
-  cssDest: './example/index.css',
+  cssDest: './example/main.css',
   configs: {
     classNames: []
   }

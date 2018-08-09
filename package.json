@@ -28,7 +28,7 @@
     "start": "webpack-dev-server --content-base=example",
     "lint": "xo",
     "test": "npm run lint && cross-env NODE_ENV=test nyc mocha --require babel-register test/*.test.js",
-    "deploy": "./script/deploy.sh",
+    "deploy": "webpack && ./script/deploy.sh",
     "codecov": "codecov",
     "preversion": "npm run build"
   },
