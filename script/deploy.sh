@@ -14,7 +14,7 @@ if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     cp -r ../example/logo.png ./logo.png
     git add .
     git commit -m "initial commit"
-    git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages > /dev/null 2>&1
+    git push --force "https://${GH_TOKEN}@${GH_REF}" master:gh-pages
   )
 else
    echo "not publising to gh-pages"
