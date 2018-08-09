@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-let numberOfOptions = 0;
-
 class TypeAhead extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +21,7 @@ class TypeAhead extends React.Component {
     this.onMouseOver = this.onMouseOver.bind(this);
 
     this.onSelect = this.onSelect.bind(this);
-    this.onSelectedindexUpdate = this.props.onSelectedindexUpdate;
+    this.onSelectedIndexUpdate = this.props.onSelectedIndexUpdate;
   }
 
   showOptions() {
@@ -95,13 +93,13 @@ class TypeAhead extends React.Component {
     if (e.keyCode === 38) {
       selectedindex = this.state.selectedindex - 1;
       if (selectedindex < 0) {
-        selectedindex = numberOfOptions - 1;
+        selectedindex = this.props.numberOfOptions - 1;
       }
     }
 
     if (e.keyCode === 40) {
       selectedindex = this.state.selectedindex + 1;
-      if (selectedindex > numberOfOptions - 1) {
+      if (selectedindex > this.props.numberOfOptions - 1) {
         selectedindex = 0;
       }
     }
@@ -110,7 +108,7 @@ class TypeAhead extends React.Component {
       shouldOptionsBeVisible: true,
       selectedindex
     });
-    this.onSelectedindexUpdate(selectedindex);
+    this.onSelectedIndexUpdate(selectedindex);
   }
 
   onMouseDown(e) {
@@ -127,23 +125,26 @@ class TypeAhead extends React.Component {
     if (this.props.children[1].props.onMouseOver) {
       this.props.children[1].props.onMouseOver(e);
     }
-    const selectedindex = Number(e.target.getAttribute('data-index'));
+
+    const selectedindex = this.props.getSelectedIndex(e.target);
     this.setState({
       selectedindex
     });
-    this.onSelectedindexUpdate(selectedindex);
+    this.onSelectedIndexUpdate(selectedindex);
   }
 
   onSelect() {
+    this.props.onSelect(this.state.selectedindex);
+
     this.setState(prevState => ({
       selectedindex: -1,
       shouldOptionsBeVisible: false,
-      inputValue: this.props.onSelect(prevState.selectedindex) || ''
+      inputValue: this.props.getSelectedValue(prevState.selectedindex) || /* istanbul ignore next */ ''
     }));
   }
 
   render() {
-    numberOfOptions = this.props.children[1].props.options.length || 0;
+    const {numberOfOptions} = this.props;
 
     const Input = React.cloneElement(this.props.children[0], {
       onFocus: this.onFocus,
@@ -172,14 +173,17 @@ class TypeAhead extends React.Component {
 }
 
 TypeAhead.propTypes = {
-  onSelectedindexUpdate: PropTypes.func.isRequired,
+  onSelectedIndexUpdate: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
+  getSelectedIndex: PropTypes.func.isRequired,
+  getSelectedValue: PropTypes.func.isRequired,
   onExpand: PropTypes.func,
   onCollapse: PropTypes.func,
 
   children: PropTypes.array.isRequired,
 
-  ariaLiveText: PropTypes.string.isRequired
+  ariaLiveText: PropTypes.string.isRequired,
+  numberOfOptions: PropTypes.number.isRequired
 };
 
 TypeAhead.defaultProps = {

@@ -9,6 +9,7 @@ class TypeaheadWikipedia extends React.Component {
     super(props);
     this.state = {
       options: [],
+      numberOfOptions: 0,
       ariaLiveText: ''
     };
 
@@ -25,6 +26,7 @@ class TypeaheadWikipedia extends React.Component {
 
       this.setState({
         options: titles,
+        numberOfOptions: titles.length,
         ariaLiveText: `${titles.length} results being displayed.`
       });
     }.bind(this);
@@ -32,6 +34,7 @@ class TypeaheadWikipedia extends React.Component {
     this.fetchOptions = debounce(this.fetchOptions.bind(this), 300);
     this.onSelect = this.onSelect.bind(this);
     this.onSelectedindexUpdate = this.onSelectedindexUpdate.bind(this);
+    this.getSelectedValue = this.getSelectedValue.bind(this);
 
     this.onChange = this.onChange.bind(this);
   }
@@ -55,6 +58,14 @@ class TypeaheadWikipedia extends React.Component {
     }));
   }
 
+  getSelectedIndex(node) {
+    return Number(node.getAttribute('data-index'));
+  }
+
+  getSelectedValue(selectedindex) {
+    return this.state.options[selectedindex];
+  }
+
   onSelect(selectedindex) {
     this.setState(prevState => ({
       ariaLiveText: `
@@ -62,7 +73,6 @@ class TypeaheadWikipedia extends React.Component {
         Options dropdown is closed.
       `
     }));
-    return this.state.options[selectedindex];
   }
 
   onChange(e) {
@@ -73,11 +83,13 @@ class TypeaheadWikipedia extends React.Component {
     return (
       <div className="Pos(a) W(100%)">
         <Typeahead
+          numberOfOptions={this.state.numberOfOptions}
           ariaLiveText={this.state.ariaLiveText}
 
-          onSelectedindexUpdate={this.onSelectedindexUpdate}
+          onSelectedIndexUpdate={this.onSelectedindexUpdate}
           onSelect={this.onSelect}
-
+          getSelectedIndex={this.getSelectedIndex}
+          getSelectedValue={this.getSelectedValue}
         >
           <Input
             onChange={this.onChange}

@@ -52,14 +52,17 @@ describe('<Typeahead />', () => {
 
   const fetchOptions = sinon.spy(function () {
     this.setState({
-      options: ['foo', 'bar', 'baz']
+      options: ['foo', 'bar', 'baz'],
+      numberOfOptions: 3
     });
   });
 
   const onExpand = sinon.spy();
   const onCollapse = sinon.spy();
-  const onSelectedindexUpdate = sinon.spy();
-  const onSelect = sinon.spy(() => 'Selected');
+  const onSelectedIndexUpdate = sinon.spy();
+  const onSelect = sinon.spy();
+  const getSelectedIndex = sinon.spy(() => 0);
+  const getSelectedValue = sinon.spy(() => 'Selected');
 
   const onFocus = sinon.spy();
   const onBlur = sinon.spy();
@@ -75,8 +78,11 @@ describe('<Typeahead />', () => {
 
     onExpand.resetHistory();
     onCollapse.resetHistory();
-    onSelectedindexUpdate.resetHistory();
+    onSelectedIndexUpdate.resetHistory();
     onSelect.resetHistory();
+    getSelectedIndex.resetHistory();
+    getSelectedIndex.resetHistory();
+    getSelectedValue.resetHistory();
 
     onFocus.resetHistory();
     onBlur.resetHistory();
@@ -89,6 +95,7 @@ describe('<Typeahead />', () => {
         super(props);
         this.state = {
           options: [],
+          numberOfOptions: 0,
           ariaLiveText: ''
         };
 
@@ -96,8 +103,10 @@ describe('<Typeahead />', () => {
 
         this.onExpand = onExpand.bind(this);
         this.onCollapse = onCollapse.bind(this);
-        this.onSelectedindexUpdate = onSelectedindexUpdate.bind(this);
+        this.onSelectedIndexUpdate = onSelectedIndexUpdate.bind(this);
         this.onSelect = onSelect.bind(this);
+        this.getSelectedIndex = getSelectedIndex.bind(this);
+        this.getSelectedValue = getSelectedValue.bind(this);
         this.onChange = onChange.bind(this);
       }
 
@@ -105,11 +114,14 @@ describe('<Typeahead />', () => {
         return (
           <Typeahead
             ariaLiveText={this.state.ariaLiveText}
+            numberOfOptions={this.state.numberOfOptions}
 
             onExpand={this.onExpand}
             onCollapse={this.onCollapse}
-            onSelectedindexUpdate={this.onSelectedindexUpdate}
+            onSelectedIndexUpdate={this.onSelectedIndexUpdate}
             onSelect={this.onSelect}
+            getSelectedIndex={this.getSelectedIndex}
+            getSelectedValue={this.getSelectedValue}
           >
             <Input
               onChange={this.onChange}
@@ -139,7 +151,7 @@ describe('<Typeahead />', () => {
     expect(onExpand.called).to.be.false;
     expect(onCollapse.called).to.be.false;
     expect(fetchOptions.called).to.be.false;
-    expect(onSelectedindexUpdate.called).to.be.false;
+    expect(onSelectedIndexUpdate.called).to.be.false;
     expect(onSelect.called).to.be.false;
 
     expect(onFocus.called).to.be.false;
@@ -174,49 +186,49 @@ describe('<Typeahead />', () => {
     expect(fetchOptions.called).to.be.true;
   });
 
-  it('should call the onSelectedindexUpdate method when down key is pressed on Typeahead/input', () => {
+  it('should call the onSelectedIndexUpdate method when down key is pressed on Typeahead/input', () => {
     MountedInput.simulate('focus');
     MountedInput.simulate('change');
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onSelectedindexUpdate.withArgs(1).called).to.be.true;
+    expect(onSelectedIndexUpdate.withArgs(1).called).to.be.true;
 
-    onSelectedindexUpdate.resetHistory();
+    onSelectedIndexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onSelectedindexUpdate.withArgs(2).called).to.be.true;
+    expect(onSelectedIndexUpdate.withArgs(2).called).to.be.true;
 
-    onSelectedindexUpdate.resetHistory();
+    onSelectedIndexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onSelectedindexUpdate.withArgs(0).called).to.be.true;
+    expect(onSelectedIndexUpdate.withArgs(0).called).to.be.true;
 
-    onSelectedindexUpdate.resetHistory();
+    onSelectedIndexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onSelectedindexUpdate.withArgs(1).called).to.be.true;
+    expect(onSelectedIndexUpdate.withArgs(1).called).to.be.true;
   });
 
-  it('should call the onSelectedindexUpdate method when up key is pressed on Typeahead/input', () => {
+  it('should call the onSelectedIndexUpdate method when up key is pressed on Typeahead/input', () => {
     MountedInput.simulate('focus');
     MountedInput.simulate('change');
     MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onSelectedindexUpdate.withArgs(2).called).to.be.true;
+    expect(onSelectedIndexUpdate.withArgs(2).called).to.be.true;
 
-    onSelectedindexUpdate.resetHistory();
+    onSelectedIndexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onSelectedindexUpdate.withArgs(1).called).to.be.true;
+    expect(onSelectedIndexUpdate.withArgs(1).called).to.be.true;
 
-    onSelectedindexUpdate.resetHistory();
+    onSelectedIndexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onSelectedindexUpdate.withArgs(0).called).to.be.true;
+    expect(onSelectedIndexUpdate.withArgs(0).called).to.be.true;
 
-    onSelectedindexUpdate.resetHistory();
+    onSelectedIndexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onSelectedindexUpdate.withArgs(2).called).to.be.true;
+    expect(onSelectedIndexUpdate.withArgs(2).called).to.be.true;
   });
 
-  it('must not call onSelectedindexUpdate, onCollapse, onSelect for key press other than up/down/enter/space on Typeahead/input', () => {
+  it('must not call onSelectedIndexUpdate, onCollapse, onSelect for key press other than up/down/enter/space on Typeahead/input', () => {
     MountedInput.simulate('focus');
     MountedInput.simulate('keyDown', {keyCode: 65});
 
-    expect(onSelectedindexUpdate.called).to.be.false;
+    expect(onSelectedIndexUpdate.called).to.be.false;
     expect(onCollapse.called).to.be.false;
     expect(onSelect.called).to.be.false;
   });
@@ -256,6 +268,7 @@ describe('<Typeahead />', () => {
     MountedInput.simulate('change');
 
     MountedTypeaheadContainer.find('li').first().simulate('mouseOver');
+    expect(getSelectedIndex.called).to.be.true;
     expect(onMouseOver.called).to.be.true;
 
     MountedTypeaheadContainer.find('li').first().simulate('mouseDown');

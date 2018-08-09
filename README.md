@@ -29,12 +29,17 @@ import Typeahead from 'react-accessible-typeahead';
   // probably use the onExpand, onCollapse, onSelectedindexUpdate, onSelect hook to update it with appropriate text
   // so that a screen reader user will be aware of the changes
   ariaLiveText={this.state.ariaLiveText}
+  // number of available options
+  numberOfOptions={this.state.numberOfOptions}
 
   // required
   // use the onSelectedindexUpdate, onSelect hook to perform any action corresponding to the events
   onSelectedindexUpdate={this.onSelectedindexUpdate}
-  // onSelect must return the selected text
   onSelect={this.onSelect}
+  // getSelectedIndex accepts the HTML node that is currently mouseover-ed and returns the corresponding index
+  getSelectedIndex={this.getSelectedIndex}
+  // getSelectedIndex accepts the selectedindex and returns the corresponding value for it
+  getSelectedValue={this.getSelectedValue}
 
   // optional
   // use the onExpand, onCollapse hook to perform any action corresponding to the events
