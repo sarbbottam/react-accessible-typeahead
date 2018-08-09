@@ -22,7 +22,9 @@
   "author": "Sarbbottam Bandyopadhyay",
   "scripts": {
     "prebuild": "rimraf build",
-    "build": "babel --out-dir build src && atomizer -o build/main.css src/",
+    "build:example": "babel --out-dir build/example example && atomizer -o build/example/main.css example/",
+    "build:src": "babel --out-dir build src && atomizer -o build/main.css src/",
+    "build": "npm run build:example && npm run build:src",
     "start": "webpack-dev-server --content-base=example",
     "lint": "xo",
     "test": "npm run lint && cross-env NODE_ENV=test nyc mocha --require babel-register test/*.test.js",

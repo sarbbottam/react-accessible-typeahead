@@ -17,7 +17,7 @@ Usage
 ------------------------------------------------------------------------------
 
 ```css
-@import /path/to/node_modules/react-accessible-typeahead/build/main.css
+@import /path/to/node_modules/react-accessible-typeahead/build/main.css;
 ```
 
 ```js
@@ -66,6 +66,20 @@ import Typeahead from 'react-accessible-typeahead';
 ```
 
 Refer [example directory](example) for a concrete example.
+
+The example components are also part of the distribution please access them like so:
+
+```js
+import Input from '/path/to/node_modules/react-accessible-typeahead/build/example/component/input.js';
+import Options from '/path/to/node_modules/react-accessible-typeahead/build/example/component/options.js';
+import TypeaheadWikipedia from '/path/to/node_modules/react-accessible-typeahead/build/example/component/typeahead-wikipedia.js';
+```
+
+Please ensure to `import` the `/path/to/node_modules/react-accessible-typeahead/build/example/main.css`
+
+```css
+@import /path/to/node_modules/react-accessible-typeahead/build/example/main.css;
+```
 
 Contributing
 ------------------------------------------------------------------------------
