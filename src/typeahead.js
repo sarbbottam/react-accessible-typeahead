@@ -172,8 +172,8 @@ class TypeAhead extends React.Component {
 TypeAhead.propTypes = {
   onSelectedindexUpdate: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
-  onExpand: PropTypes.func.isRequired,
-  onCollapse: PropTypes.func.isRequired,
+  onExpand: PropTypes.func,
+  onCollapse: PropTypes.func,
 
   children: PropTypes.array.isRequired,
 
@@ -182,6 +182,9 @@ TypeAhead.propTypes = {
 };
 
 TypeAhead.defaultProps = {
+  onExpand: () => {},
+  onCollapse: () => {},
+
   clearInputOnSelect: false
 };
 export default TypeAhead;

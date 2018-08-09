@@ -35,11 +35,14 @@ import Typeahead from 'react-accessible-typeahead';
   clearInputOnSelect={true}
 
   // required
-  // use the onExpand, onCollapse, onSelectedindexUpdate, onSelect hook to perform any action corresponding to the events
-  onExpand={this.onExpand}
-  onCollapse={this.onCollapse}
+  // use the onSelectedindexUpdate, onSelect hook to perform any action corresponding to the events
   onSelectedindexUpdate={this.onSelectedindexUpdate}
   onSelect={this.onSelect}
+
+  // optional
+  // use the onExpand, onCollapse hook to perform any action corresponding to the events
+  onExpand={this.onExpand}
+  onCollapse={this.onCollapse}
 >
   <Input
     // required

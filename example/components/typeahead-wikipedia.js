@@ -32,8 +32,6 @@ class TypeaheadWikipedia extends React.Component {
     this.fetchOptions = debounce(this.fetchOptions.bind(this), 300);
     this.onSelect = this.onSelect.bind(this);
     this.onSelectedindexUpdate = this.onSelectedindexUpdate.bind(this);
-    this.onCollapse = this.onCollapse.bind(this);
-    this.onExpand = this.onExpand.bind(this);
 
     this.onChange = this.onChange.bind(this);
   }
@@ -57,20 +55,6 @@ class TypeaheadWikipedia extends React.Component {
     }));
   }
 
-  onCollapse() {
-    this.setState({
-      ariaLiveText: `Options dropdown is closed.`
-    });
-  }
-
-  onExpand() {
-    this.setState(prevState => {
-      if (prevState.options.length > 0) {
-        return {ariaLiveText: `${prevState.options.length} results being displayed.`};
-      }
-    });
-  }
-
   onSelect(selectedindex) {
     this.setState(prevState => ({
       ariaLiveText: `
@@ -89,15 +73,13 @@ class TypeaheadWikipedia extends React.Component {
       <div className="Pos(a) W(100%)">
         <Typeahead
           ariaLiveText={this.state.ariaLiveText}
-          clearInputOnSelect={false}
 
-          onExpand={this.onExpand}
-          onCollapse={this.onCollapse}
           onSelectedindexUpdate={this.onSelectedindexUpdate}
           onSelect={this.onSelect}
         >
           <Input
             onChange={this.onChange}
+
             placeholder="Type to fetch options, use up and down arrow to navigate the options, followed by enter to choose the option"
           />
           <Options options={this.state.options}/>
