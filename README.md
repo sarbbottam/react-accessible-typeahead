@@ -23,55 +23,81 @@ Import the `react-accessible-typeahead/build/main.css` to App so:
 
 Use the `react-accessible-typeahead` component in the App like so:
 ```js
+import React from 'react';
 import Typeahead from 'react-accessible-typeahead';
+import Input from './input';
+import Options from './options';
 
-<Typeahead
-  /* required */
+class MyTypeahead extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputValue: '',
+      options: [],
+      numberOfOptions: 0
+    };
 
-  // text that will be used to update the aria live region
-  // probably use onExpand, onCollapse, onSelectedIndexUpdate, onSelect hook to update it with appropriate text
-  // so that a screen reader user will be aware of the changes
-  ariaLiveText={this.state.ariaLiveText}
-  // number of available options
-  numberOfOptions={this.state.numberOfOptions}
-  // use onSelectedIndexUpdate hook to perform any action corresponding to the event
-  onSelectedIndexUpdate={this.onSelectedIndexUpdate}
-  // use onSelect hook to perform any action corresponding to the event
-  onSelect={this.onSelect}
-  // getSelectedIndex accepts the HTML node that is currently mouseover-ed and returns the corresponding index
-  getSelectedIndex={this.getSelectedIndex}
-  // getSelectedIndex accepts the selectedindex and returns the corresponding value for it
-  getSelectedValue={this.getSelectedValue}
+    this.fetchOptions = fetchOptions.bind(this);
+    this.onSelect = this.onSelect.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
 
-  /* optional */
+  fetchOptions(query) {
+    this.setState({
+      // some function to fetch option that can be accessed here
+      // options: functionToFetchOption(query)
+    });
+  }
 
-  // use onExpand hook to perform any action corresponding to the event
-  onExpand={this.onExpand}
-  // use onCollapse hook to perform any action corresponding to the event
-  onCollapse={this.onCollapse}
->
-  <Input
-    /* required */
+  onSelect(selectedindex) {
+    this.setState(prevState => ({
+      inputValue: e ? e.target.innerHTML : prevState.options[selectedindex]
+    }));
+  }
 
-    // use onChange to fetch data, update this.state.options and numberOfOptions
-    // this method will be called from TypeAhead's onChange method
-    // TypeAhead's onChange method will be passed to this Input as props
-    onChange={this.onChange}
+  onChange(e) {
+    this.setState({
+      inputValue: e.target.value
+    });
 
-    /* optional*/
+    this.fetchOptions(e.target.value || '');
+  }
 
-    // pass any other props if needed
-    {...props}
-  />
-  <Options
-    /* optional */
+  render() {
+    return (
+      <Typeahead
+        // namespace will be used as an id prefix
+        namespace="wikipedia-typeahead"
+        // number of available options
+        numberOfOptions={this.state.numberOfOptions}
+        // use onSelect hook to perform any action corresponding to the event
+        onSelect={this.onSelect}
+      >
+        <Input
+          // should be used as label
+          placeholder="Search"
+          // use onChange to fetch data, update this.state.options and numberOfOptions
+          // this method will be called from TypeAhead's onChange method
+          // TypeAhead's onChange method will be passed to this Input as props
+          onChange={this.onChange}
 
-    // pass any props if needed
-    // probably pass this.state.options which could be used by Options component
-    options={this.state.options}
-    {...props}
-  />
-</Typeahead>
+          value={this.state.inputValue}
+
+          // pass any other props if needed
+          {...props}
+        />
+        <Options
+          /* optional */
+
+          // pass any props if needed
+          // probably pass this.state.options which could be used by Options component
+          options={this.state.options}
+          {...props}
+        />
+      </Typeahead>
+    );
+  }
+}
 ```
 
 Refer [example directory](example) for a concrete example.

@@ -8,9 +8,9 @@ class TypeaheadWikipedia extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      inputValue: '',
       options: [],
-      numberOfOptions: 0,
-      ariaLiveText: ''
+      numberOfOptions: 0
     };
 
     window.parseResponse = function (response) {
@@ -26,17 +26,13 @@ class TypeaheadWikipedia extends React.Component {
 
       this.setState({
         options: titles,
-        numberOfOptions: titles.length,
-        ariaLiveText: `${titles.length} results being displayed.`
+        numberOfOptions: titles.length
       });
     }.bind(this);
 
     this.fetchOptions = debounce(this.fetchOptions.bind(this), 300);
-    this.onSelect = this.onSelect.bind(this);
-    this.onSelectedindexUpdate = this.onSelectedindexUpdate.bind(this);
-    this.getSelectedValue = this.getSelectedValue.bind(this);
-
     this.onChange = this.onChange.bind(this);
+    this.onSelect = this.onSelect.bind(this);
   }
 
   addScript(src) {
@@ -46,36 +42,20 @@ class TypeaheadWikipedia extends React.Component {
   }
 
   fetchOptions(query) {
-    this.setState({
-      ariaLiveText: `Searching ...`
-    });
     this.addScript(`https://en.wikipedia.org/w/api.php?action=query&format=json&generator=prefixsearch&gpssearch=${query}&gpslimit=10&callback=parseResponse`);
   }
 
-  onSelectedindexUpdate(selectedindex) {
+  onSelect(e, selectedindex) {
     this.setState(prevState => ({
-      ariaLiveText: `${prevState.options[selectedindex]}, option ${selectedindex + 1} of ${prevState.options.length}`
-    }));
-  }
-
-  getSelectedIndex(node) {
-    return Number(node.getAttribute('data-index'));
-  }
-
-  getSelectedValue(selectedindex) {
-    return this.state.options[selectedindex];
-  }
-
-  onSelect(selectedindex) {
-    this.setState(prevState => ({
-      ariaLiveText: `
-        ${prevState.options[selectedindex]}, option ${selectedindex + 1} of ${prevState.options.length} selected.
-        Options dropdown is closed.
-      `
+      inputValue: e ? e.target.innerHTML : prevState.options[selectedindex]
     }));
   }
 
   onChange(e) {
+    this.setState({
+      inputValue: e.target.value
+    });
+
     this.fetchOptions(e.target.value || '');
   }
 
@@ -83,19 +63,15 @@ class TypeaheadWikipedia extends React.Component {
     return (
       <div className="Pos(r) W(100%)">
         <Typeahead
+          namespace="wikipedia-typeahead"
           numberOfOptions={this.state.numberOfOptions}
-          ariaLiveText={this.state.ariaLiveText}
 
-          onSelectedIndexUpdate={this.onSelectedindexUpdate}
           onSelect={this.onSelect}
-          getSelectedIndex={this.getSelectedIndex}
-          getSelectedValue={this.getSelectedValue}
         >
           <Input
-            id="wikipedia-typeahead"
+            placeholder="Wikipedia search"
+            value={this.state.inputValue}
             onChange={this.onChange}
-
-            placeholder="Type to fetch options, use up and down arrow to navigate the options, followed by enter to choose the option"
           />
           <Options options={this.state.options}/>
         </Typeahead>

@@ -76,8 +76,6 @@ describe('<Typeahead />', () => {
   beforeEach(() => {
     fetchOptions.resetHistory();
 
-    onExpand.resetHistory();
-    onCollapse.resetHistory();
     onSelectedIndexUpdate.resetHistory();
     onSelect.resetHistory();
     getSelectedIndex.resetHistory();
@@ -94,9 +92,9 @@ describe('<Typeahead />', () => {
       constructor(props) {
         super(props);
         this.state = {
+          inputValue: '',
           options: [],
-          numberOfOptions: 0,
-          ariaLiveText: ''
+          numberOfOptions: 0
         };
 
         this.fetchOptions = fetchOptions.bind(this);
@@ -113,17 +111,15 @@ describe('<Typeahead />', () => {
       render() {
         return (
           <Typeahead
-            ariaLiveText={this.state.ariaLiveText}
+            namespace="test-typeahead"
             numberOfOptions={this.state.numberOfOptions}
 
-            onExpand={this.onExpand}
-            onCollapse={this.onCollapse}
-            onSelectedIndexUpdate={this.onSelectedIndexUpdate}
             onSelect={this.onSelect}
-            getSelectedIndex={this.getSelectedIndex}
-            getSelectedValue={this.getSelectedValue}
+
           >
             <Input
+              placeholder="Test search"
+              value={this.state.inputValue}
               onChange={this.onChange}
 
               onFocus={onFocus}
@@ -147,8 +143,6 @@ describe('<Typeahead />', () => {
 
     MountedInput = MountedTypeaheadContainer.find('input');
 
-    expect(onExpand.called).to.be.false;
-    expect(onCollapse.called).to.be.false;
     expect(fetchOptions.called).to.be.false;
     expect(onSelectedIndexUpdate.called).to.be.false;
     expect(onSelect.called).to.be.false;
@@ -161,75 +155,10 @@ describe('<Typeahead />', () => {
     expect(onMouseOver.called).to.be.false;
   });
 
-  it('should call the onExpand method when Typeahead/input is focused', () => {
-    MountedInput.simulate('focus');
-    expect(onExpand.called).to.be.true;
-  });
-
-  it('should call the onCollapse method when Typeahead/input is blured', () => {
-    MountedInput.simulate('blur');
-    expect(onCollapse.called).to.be.true;
-  });
-
-  it('should call the onCollapse method when esc key is pressed on Typeahead/input', () => {
-    MountedInput.simulate('focus');
-    MountedInput.simulate('change');
-    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    MountedInput.simulate('keyDown', {keyCode: 27}); // esc
-    expect(onCollapse.called).to.be.true;
-  });
-
   it('should call the fetchOptions method when Typeahead/input is changed', () => {
     MountedInput.simulate('focus');
     MountedInput.simulate('change');
     expect(fetchOptions.called).to.be.true;
-  });
-
-  it('should call the onSelectedIndexUpdate method when down key is pressed on Typeahead/input', () => {
-    MountedInput.simulate('focus');
-    MountedInput.simulate('change');
-    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onSelectedIndexUpdate.withArgs(1).called).to.be.true;
-
-    onSelectedIndexUpdate.resetHistory();
-    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onSelectedIndexUpdate.withArgs(2).called).to.be.true;
-
-    onSelectedIndexUpdate.resetHistory();
-    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onSelectedIndexUpdate.withArgs(0).called).to.be.true;
-
-    onSelectedIndexUpdate.resetHistory();
-    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onSelectedIndexUpdate.withArgs(1).called).to.be.true;
-  });
-
-  it('should call the onSelectedIndexUpdate method when up key is pressed on Typeahead/input', () => {
-    MountedInput.simulate('focus');
-    MountedInput.simulate('change');
-    MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onSelectedIndexUpdate.withArgs(2).called).to.be.true;
-
-    onSelectedIndexUpdate.resetHistory();
-    MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onSelectedIndexUpdate.withArgs(1).called).to.be.true;
-
-    onSelectedIndexUpdate.resetHistory();
-    MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onSelectedIndexUpdate.withArgs(0).called).to.be.true;
-
-    onSelectedIndexUpdate.resetHistory();
-    MountedInput.simulate('keyDown', {keyCode: 38}); // up arrow
-    expect(onSelectedIndexUpdate.withArgs(2).called).to.be.true;
-  });
-
-  it('must not call onSelectedIndexUpdate, onCollapse, onSelect for key press other than up/down/enter/space on Typeahead/input', () => {
-    MountedInput.simulate('focus');
-    MountedInput.simulate('keyDown', {keyCode: 65});
-
-    expect(onSelectedIndexUpdate.called).to.be.false;
-    expect(onCollapse.called).to.be.false;
-    expect(onSelect.called).to.be.false;
   });
 
   it('should call the onSelect method when enter key is pressed on Typeahead/input after key up or key down', () => {
@@ -237,7 +166,7 @@ describe('<Typeahead />', () => {
     MountedInput.simulate('change');
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
     MountedInput.simulate('keyDown', {keyCode: 13}); // enter
-    expect(onSelect.withArgs(1).called).to.be.true;
+    expect(onSelect.called).to.be.true;
   });
 
   it('should call the onSelect method when mouse down is performed on any Typeahead/option', () => {
@@ -245,7 +174,7 @@ describe('<Typeahead />', () => {
     MountedInput.simulate('change');
     MountedTypeaheadContainer.find('li').first().simulate('mouseOver');
     MountedTypeaheadContainer.find('li').first().simulate('mouseDown');
-    expect(onSelect.withArgs(0).called).to.be.true;
+    expect(onSelect.called).to.be.true;
   });
 
   it('should call the passed onFocus, onBlur, onChange, and onKeyDown when such event occurs on Typeahead/input', () => {
@@ -267,7 +196,6 @@ describe('<Typeahead />', () => {
     MountedInput.simulate('change');
 
     MountedTypeaheadContainer.find('li').first().simulate('mouseOver');
-    expect(getSelectedIndex.called).to.be.true;
     expect(onMouseOver.called).to.be.true;
 
     MountedTypeaheadContainer.find('li').first().simulate('mouseDown');

@@ -6,8 +6,7 @@ class TypeAhead extends React.Component {
     super(props);
     this.state = {
       shouldOptionsBeVisible: false,
-      selectedindex: -1,
-      inputValue: ''
+      selectedindex: -1
     };
 
     this.showOptions = this.showOptions.bind(this);
@@ -21,14 +20,12 @@ class TypeAhead extends React.Component {
     this.onMouseOver = this.onMouseOver.bind(this);
 
     this.onSelect = this.onSelect.bind(this);
-    this.onSelectedIndexUpdate = this.props.onSelectedIndexUpdate;
   }
 
   showOptions() {
     this.setState({
       shouldOptionsBeVisible: true
     });
-    this.props.onExpand();
   }
 
   hideOptions() {
@@ -36,7 +33,6 @@ class TypeAhead extends React.Component {
       selectedindex: -1,
       shouldOptionsBeVisible: false
     });
-    this.props.onCollapse();
   }
 
   onFocus(e) {
@@ -60,10 +56,6 @@ class TypeAhead extends React.Component {
     if (this.props.children[0].props.onChange) {
       this.props.children[0].props.onChange(e);
     }
-    this.setState({
-      inputValue: e.target.value,
-      selectedindex: 0
-    });
     this.showOptions();
   }
 
@@ -84,7 +76,7 @@ class TypeAhead extends React.Component {
     }
 
     if (e.keyCode === 13) {
-      this.onSelect();
+      this.onSelect(null, this.state.selectedindex);
       return;
     }
 
@@ -108,7 +100,6 @@ class TypeAhead extends React.Component {
       shouldOptionsBeVisible: true,
       selectedindex
     });
-    this.onSelectedIndexUpdate(selectedindex);
   }
 
   onMouseDown(e) {
@@ -117,7 +108,7 @@ class TypeAhead extends React.Component {
       this.props.children[1].props.onMouseDown(e);
     }
     e.preventDefault();
-    this.onSelect();
+    this.onSelect(e);
   }
 
   onMouseOver(e) {
@@ -126,68 +117,66 @@ class TypeAhead extends React.Component {
       this.props.children[1].props.onMouseOver(e);
     }
 
-    const selectedindex = this.props.getSelectedIndex(e.target);
+    const selectedindex = [...e.target.parentNode.children].indexOf(e.target);
     this.setState({
       selectedindex
     });
-    this.onSelectedIndexUpdate(selectedindex);
   }
 
-  onSelect() {
-    this.props.onSelect(this.state.selectedindex);
+  onSelect(e, selectedindex) {
+    this.props.onSelect(e, selectedindex);
 
-    this.setState(prevState => ({
+    this.setState({
       selectedindex: -1,
-      shouldOptionsBeVisible: false,
-      inputValue: this.props.getSelectedValue(prevState.selectedindex) || /* istanbul ignore next */ ''
-    }));
+      shouldOptionsBeVisible: false
+    });
   }
 
   render() {
     const {numberOfOptions} = this.props;
+    const inputId = `${this.props.namespace}-input`;
+    const optionsId = `${this.props.namespace}-options`;
 
     const Input = React.cloneElement(this.props.children[0], {
+      id: inputId,
+      autoComplete: 'off',
+      'aria-autocomplete': 'list',
+      'aria-controls': optionsId,
+      'aria-activedescendant': `${this.props.namespace}-${this.state.selectedindex}`,
+
       onFocus: this.onFocus,
       onBlur: this.onBlur,
       onChange: this.onChange,
-      onKeyDown: this.onKeyDown,
-      value: this.state.inputValue,
-      'aria-expanded': this.state.shouldOptionsBeVisible && Boolean(numberOfOptions)
+      onKeyDown: this.onKeyDown
+
     });
 
     const Options = React.cloneElement(this.props.children[1], {
-      className: this.state.shouldOptionsBeVisible && numberOfOptions ? 'D(b)' : 'D(n)',
-      selectedindex: this.state.selectedindex,
+      id: optionsId,
+      role: 'listbox',
+      namespace: this.props.namespace,
       onMouseDown: this.onMouseDown,
-      onMouseOver: this.onMouseOver
+      onMouseOver: this.onMouseOver,
+      selectedindex: this.state.selectedindex
     });
 
     return (
       <div>
-        <span className="Hidden" aria-live="assertive">{this.props.ariaLiveText}</span>
         {Input}
-        {Options}
+        <div style={{display: numberOfOptions && this.state.shouldOptionsBeVisible ? 'block' : 'none'}}>
+          {Options}
+        </div>
       </div>
     );
   }
 }
 
 TypeAhead.propTypes = {
-  onSelectedIndexUpdate: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
-  getSelectedIndex: PropTypes.func.isRequired,
-  getSelectedValue: PropTypes.func.isRequired,
-  onExpand: PropTypes.func,
-  onCollapse: PropTypes.func,
 
+  namespace: PropTypes.string.isRequired,
   children: PropTypes.array.isRequired,
-
-  ariaLiveText: PropTypes.string.isRequired,
   numberOfOptions: PropTypes.number.isRequired
 };
 
-TypeAhead.defaultProps = {
-  onExpand: () => {},
-  onCollapse: () => {}
-};
 export default TypeAhead;

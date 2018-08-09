@@ -24,16 +24,13 @@ class MyTypeahead extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      inputValue: '',
       options: [],
-      numberOfOptions: 0,
-      ariaLiveText: ''
+      numberOfOptions: 0
     };
 
     this.fetchOptions = fetchOptions.bind(this);
     this.onSelect = this.onSelect.bind(this);
-    this.onSelectedindexUpdate = this.onSelectedindexUpdate.bind(this);
-    this.getSelectedValue = this.getSelectedValue.bind(this);
-
     this.onChange = this.onChange.bind(this);
   }
 
@@ -44,50 +41,34 @@ class MyTypeahead extends React.Component {
     });
   }
 
-  onSelectedindexUpdate(selectedindex) {
-    // this.setState(prevState => ({
-    //   ariaLiveText: \`\${prevState.options[selectedindex]}, option \${selectedindex + 1} of \${prevState.options.length}\`
-    // }));
-  }
-
-  getSelectedIndex(node) {
-    // return Number(node.getAttribute('data-index'));
-  }
-
-  getSelectedValue(selectedindex) {
-    // return this.state.options[selectedindex];
-  }
-
   onSelect(selectedindex) {
-    // this.setState(prevState => ({
-    //   ariaLiveText: \`
-    //     \${prevState.options[selectedindex]}, option \${selectedindex + 1} of \${prevState.options.length} selected.
-    //     Options dropdown is closed.
-    //   \`
-    // }));
+    this.setState(prevState => ({
+      inputValue: e ? e.target.innerHTML : prevState.options[selectedindex]
+    }));
   }
 
   onChange(e) {
-    // this.fetchOptions(e.target.value || '');
+    this.setState({
+      inputValue: e.target.value
+    });
+
+    this.fetchOptions(e.target.value || '');
   }
 
   render() {
     return (
       <div className="Pos(a) W(100%)">
         <Typeahead
+          namespace="my-typeahead"
           numberOfOptions={this.state.numberOfOptions}
-          ariaLiveText={this.state.ariaLiveText}
 
-          onSelectedIndexUpdate={this.onSelectedindexUpdate}
           onSelect={this.onSelect}
-          getSelectedIndex={this.getSelectedIndex}
-          getSelectedValue={this.getSelectedValue}
         >
           <Input
-            id="my-typeahead"
+            placeholder="Search"
+            value={this.state.inputValue}
             onChange={this.onChange}
 
-            placeholder="Type to fetch options, use up and down arrow to navigate the options, followed by enter to choose the option"
           />
           <Options options={this.state.options}/>
         </Typeahead>
