@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 const Input = props => {
   return (
     <div>
-      <label className="Hidden">{props.placeholder}</label>
+      <label htmlFor={props.id} className="Hidden">{props.placeholder}</label>
       <input
+        id={props.id}
         type="text"
         {...props}
         placeholder={props.placeholder}
@@ -16,6 +17,7 @@ const Input = props => {
 };
 
 Input.propTypes = {
+  id: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired
 };
 

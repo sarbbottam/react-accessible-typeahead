@@ -92,6 +92,7 @@ class TypeaheadWikipedia extends React.Component {
           getSelectedValue={this.getSelectedValue}
         >
           <Input
+            id="wikipedia-typeahead"
             onChange={this.onChange}
 
             placeholder="Type to fetch options, use up and down arrow to navigate the options, followed by enter to choose the option"
