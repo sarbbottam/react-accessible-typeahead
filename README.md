@@ -48,7 +48,7 @@ import Typeahead from 'react-accessible-typeahead';
 >
   <Input
     // required
-    // use onChange to fetch data and update this.state.options
+    // use onChange to fetch data, update this.state.options and numberOfOptions
     // this method will be called from TypeAhead's onChange method
     // which will be passed to Input as props
     onChange={this.onChange}
