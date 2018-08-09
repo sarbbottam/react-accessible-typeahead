@@ -45,6 +45,7 @@ vendor
 build
 **/example/index.js
 **/example/main.css
+**/example/logo
 
 # Packages #
 ############

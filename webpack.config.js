@@ -1,8 +1,17 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   entry: './example/index-esnext.js',
+  plugins: [
+    new CopyWebpackPlugin([
+      {
+        from: 'logo/logo.png',
+        to: 'logo.png'
+      }
+    ])
+  ],
   module: {
     rules: [
       {
