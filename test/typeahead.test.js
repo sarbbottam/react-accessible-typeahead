@@ -59,7 +59,7 @@ describe('<Typeahead />', () => {
   const onExpand = sinon.spy();
   const onCollapse = sinon.spy();
   const onSelectedindexUpdate = sinon.spy();
-  const onSelect = sinon.spy();
+  const onSelect = sinon.spy(() => 'Selected');
 
   const onFocus = sinon.spy();
   const onBlur = sinon.spy();

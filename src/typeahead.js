@@ -135,11 +135,10 @@ class TypeAhead extends React.Component {
   }
 
   onSelect() {
-    this.props.onSelect(this.state.selectedindex);
     this.setState(prevState => ({
       selectedindex: -1,
       shouldOptionsBeVisible: false,
-      inputValue: this.props.clearInputOnSelect === true ? /* istanbul ignore next */ '' : this.props.children[1].props.options[prevState.selectedindex]
+      inputValue: this.props.onSelect(prevState.selectedindex) || ''
     }));
   }
 
@@ -180,14 +179,11 @@ TypeAhead.propTypes = {
 
   children: PropTypes.array.isRequired,
 
-  ariaLiveText: PropTypes.string.isRequired,
-  clearInputOnSelect: PropTypes.bool
+  ariaLiveText: PropTypes.string.isRequired
 };
 
 TypeAhead.defaultProps = {
   onExpand: () => {},
-  onCollapse: () => {},
-
-  clearInputOnSelect: false
+  onCollapse: () => {}
 };
 export default TypeAhead;

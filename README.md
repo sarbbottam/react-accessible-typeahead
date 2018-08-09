@@ -30,13 +30,10 @@ import Typeahead from 'react-accessible-typeahead';
   // so that a screen reader user will be aware of the changes
   ariaLiveText={this.state.ariaLiveText}
 
-  // optional
-  // default value is false, pass it if you need to clear out the textbox on selection.
-  clearInputOnSelect={true}
-
   // required
   // use the onSelectedindexUpdate, onSelect hook to perform any action corresponding to the events
   onSelectedindexUpdate={this.onSelectedindexUpdate}
+  // onSelect must return the selected text
   onSelect={this.onSelect}
 
   // optional

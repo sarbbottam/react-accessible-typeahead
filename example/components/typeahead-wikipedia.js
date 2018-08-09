@@ -62,6 +62,7 @@ class TypeaheadWikipedia extends React.Component {
         Options dropdown is closed.
       `
     }));
+    return this.state.options[selectedindex];
   }
 
   onChange(e) {
@@ -76,6 +77,7 @@ class TypeaheadWikipedia extends React.Component {
 
           onSelectedindexUpdate={this.onSelectedindexUpdate}
           onSelect={this.onSelect}
+
         >
           <Input
             onChange={this.onChange}
