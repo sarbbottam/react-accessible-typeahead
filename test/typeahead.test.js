@@ -178,10 +178,6 @@ describe('<Typeahead />', () => {
     MountedInput.simulate('focus');
     MountedInput.simulate('change');
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
-    expect(onSelectedindexUpdate.withArgs(0).called).to.be.true;
-
-    onSelectedindexUpdate.resetHistory();
-    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
     expect(onSelectedindexUpdate.withArgs(1).called).to.be.true;
 
     onSelectedindexUpdate.resetHistory();
@@ -191,6 +187,10 @@ describe('<Typeahead />', () => {
     onSelectedindexUpdate.resetHistory();
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
     expect(onSelectedindexUpdate.withArgs(0).called).to.be.true;
+
+    onSelectedindexUpdate.resetHistory();
+    MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
+    expect(onSelectedindexUpdate.withArgs(1).called).to.be.true;
   });
 
   it('should call the onSelectedindexUpdate method when up key is pressed on Typeahead/input', () => {
@@ -226,7 +226,7 @@ describe('<Typeahead />', () => {
     MountedInput.simulate('change');
     MountedInput.simulate('keyDown', {keyCode: 40}); // down arrow
     MountedInput.simulate('keyDown', {keyCode: 13}); // enter
-    expect(onSelect.withArgs(0).called).to.be.true;
+    expect(onSelect.withArgs(1).called).to.be.true;
   });
 
   it('should call the onSelect method when mouse down is performed on any Typeahead/option', () => {

@@ -62,7 +62,10 @@ class TypeAhead extends React.Component {
     if (this.props.children[0].props.onChange) {
       this.props.children[0].props.onChange(e);
     }
-    this.setState({inputValue: e.target.value});
+    this.setState({
+      inputValue: e.target.value,
+      selectedindex: 0
+    });
     this.showOptions();
   }
 
