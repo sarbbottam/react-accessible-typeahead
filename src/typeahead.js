@@ -161,7 +161,7 @@ class TypeAhead extends React.Component {
       onMouseDown: this.onMouseDown,
       onMouseOver: this.onMouseOver,
       selectedindex: this.state.selectedindex,
-      style:{display: numberOfOptions && this.state.shouldOptionsBeVisible ? 'block' : 'none'}
+      style: {display: numberOfOptions && this.state.shouldOptionsBeVisible ? 'block' : 'none'}
     });
 
     return (
@@ -171,8 +171,8 @@ class TypeAhead extends React.Component {
           role="combobox"
           aria-owns={optionsId}
           aria-haspopup="listbox"
-          aria-expanded={numberOfOptions && this.state.shouldOptionsBeVisible? true : false}
-          >
+          aria-expanded={numberOfOptions && this.state.shouldOptionsBeVisible}
+        >
           {Input}
         </div>
         {Options}
