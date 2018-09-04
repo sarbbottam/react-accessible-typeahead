@@ -46,8 +46,9 @@ class TypeaheadWikipedia extends React.Component {
   }
 
   onSelect(e, selectedindex) {
-    this.setState(prevState => ({
-      inputValue: e ? e.target.innerHTML : prevState.options[selectedindex]
+    const inputValue = e ? e.target.innerHTML : this.state.options[selectedindex];
+    this.setState(() => ({
+      inputValue
     }));
   }
 
