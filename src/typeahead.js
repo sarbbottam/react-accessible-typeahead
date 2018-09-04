@@ -141,8 +141,11 @@ class TypeAhead extends React.Component {
       id: inputId,
       autoComplete: 'off',
       'aria-autocomplete': 'list',
+      // Safari needs this
       'aria-controls': optionsId,
       'aria-activedescendant': `${this.props.namespace}-${this.state.selectedindex}`,
+      // Chrome does to always announce the selected text
+      'aria-live': 'assertive',
 
       onFocus: this.onFocus,
       onBlur: this.onBlur,
@@ -157,15 +160,22 @@ class TypeAhead extends React.Component {
       namespace: this.props.namespace,
       onMouseDown: this.onMouseDown,
       onMouseOver: this.onMouseOver,
-      selectedindex: this.state.selectedindex
+      selectedindex: this.state.selectedindex,
+      style:{display: numberOfOptions && this.state.shouldOptionsBeVisible ? 'block' : 'none'}
     });
 
     return (
       <div>
-        {Input}
-        <div style={{display: numberOfOptions && this.state.shouldOptionsBeVisible ? 'block' : 'none'}}>
-          {Options}
+        {/* Safari needs all of these */}
+        <div
+          role="combobox"
+          aria-owns={optionsId}
+          aria-haspopup="listbox"
+          aria-expanded={numberOfOptions && this.state.shouldOptionsBeVisible? true : false}
+          >
+          {Input}
         </div>
+        {Options}
       </div>
     );
   }
