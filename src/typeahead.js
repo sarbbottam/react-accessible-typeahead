@@ -65,6 +65,9 @@ class TypeAhead extends React.Component {
       this.props.children[0].props.onKeyDown(e);
     }
     if (e.keyCode !== 13 && e.keyCode !== 27 && e.keyCode !== 38 && e.keyCode !== 40) {
+      this.setState({
+        selectedindex: -1
+      });
       return;
     }
 
@@ -144,8 +147,6 @@ class TypeAhead extends React.Component {
       // Safari needs this
       'aria-controls': optionsId,
       'aria-activedescendant': `${this.props.namespace}-${this.state.selectedindex}`,
-      // Chrome does to always announce the selected text
-      'aria-live': 'assertive',
 
       onFocus: this.onFocus,
       onBlur: this.onBlur,
@@ -166,6 +167,9 @@ class TypeAhead extends React.Component {
 
     return (
       <div>
+        <div className="Hidden" role="alert">
+          {this.props.ariaLiveText}
+        </div>
         {/* Safari needs all of these */}
         <div
           role="combobox"
@@ -186,7 +190,8 @@ TypeAhead.propTypes = {
 
   namespace: PropTypes.string.isRequired,
   children: PropTypes.array.isRequired,
-  numberOfOptions: PropTypes.number.isRequired
+  numberOfOptions: PropTypes.number.isRequired,
+  ariaLiveText: PropTypes.string.isRequired
 };
 
 export default TypeAhead;

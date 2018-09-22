@@ -10,7 +10,8 @@ class TypeaheadWikipedia extends React.Component {
     this.state = {
       inputValue: '',
       options: [],
-      numberOfOptions: 0
+      numberOfOptions: 0,
+      ariaLiveText: ''
     };
 
     window.parseResponse = function (response) {
@@ -24,9 +25,14 @@ class TypeaheadWikipedia extends React.Component {
         }
       }
 
+      const ariaLiveText = titles.length ?
+        `${titles.length} suggestions available. Use up and down keys to navigate followed by enter to select` :
+        'No suggestions available.';
+
       this.setState({
         options: titles,
-        numberOfOptions: titles.length
+        numberOfOptions: titles.length,
+        ariaLiveText
       });
     }.bind(this);
 
@@ -48,12 +54,14 @@ class TypeaheadWikipedia extends React.Component {
   onSelect(e, selectedindex) {
     const inputValue = e ? e.target.innerHTML : this.state.options[selectedindex];
     this.setState(() => ({
-      inputValue
+      inputValue,
+      ariaLiveText: ''
     }));
   }
 
   onChange(e) {
     this.setState({
+      ariaLiveText: '',
       inputValue: e.target.value
     });
 
@@ -66,7 +74,7 @@ class TypeaheadWikipedia extends React.Component {
         <Typeahead
           namespace="wikipedia-typeahead"
           numberOfOptions={this.state.numberOfOptions}
-
+          ariaLiveText={this.state.ariaLiveText}
           onSelect={this.onSelect}
         >
           <Input
