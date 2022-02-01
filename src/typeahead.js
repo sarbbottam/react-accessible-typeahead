@@ -175,7 +175,7 @@ class TypeAhead extends React.Component {
           role="combobox"
           aria-owns={optionsId}
           aria-haspopup="listbox"
-          aria-expanded={numberOfOptions && this.state.shouldOptionsBeVisible}
+          aria-expanded={Boolean(numberOfOptions) && this.state.shouldOptionsBeVisible}
         >
           {Input}
         </div>

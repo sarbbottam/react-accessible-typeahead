@@ -201,4 +201,9 @@ describe('<Typeahead />', () => {
     MountedTypeaheadContainer.find('li').first().simulate('mouseDown');
     expect(onMouseDown.called).to.be.true;
   });
+
+  it('should have aria-expanded false when no results', () => {
+    const combobox = MountedTypeaheadContainer.find({role: 'combobox'});
+    expect(combobox.prop('aria-expanded')).to.be.false;
+  });
 });
